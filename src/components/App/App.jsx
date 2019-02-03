@@ -1,15 +1,15 @@
 import React, {Component} from 'react'
 import {BrowserRouter, Route} from 'react-router-dom'
 
-import Counter from './Coutner'
-import Home from './Home';
-import Menu from './Menu';
+import Counter from '../Counter/Coutner'
+import Home from '../Home/Home';
+import Menu from '../Menu/Menu';
 
 class App extends Component{
     render(){
         return(
             <BrowserRouter>
-                <div className='container-fluid'>
+                <div className='container-fluid p-0'>
                     <Menu></Menu>
                     <Route exact path='/' component={Home} />
                     <Route exact path='/counter' component={Counter} />
