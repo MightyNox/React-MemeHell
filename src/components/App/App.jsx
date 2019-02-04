@@ -4,6 +4,7 @@ import {BrowserRouter, Route} from 'react-router-dom'
 import Counter from '../Counter/Coutner'
 import Home from '../Home/Home';
 import Menu from '../Menu/Menu';
+import Register from '../Register/Register';
 
 class App extends Component{
     render(){
@@ -13,6 +14,7 @@ class App extends Component{
                     <Menu></Menu>
                     <Route exact path='/' component={Home} />
                     <Route exact path='/counter' component={Counter} />
+                    <Route exact path='/register' component={Register} />
                 </div>
             </BrowserRouter>
         )

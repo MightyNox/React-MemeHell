@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom'
-import './menu.css'
+import './Menu.css'
 
 class Menu extends Component {
     render() {
@@ -14,6 +14,7 @@ class Menu extends Component {
                 
                     <ul className="navbar-nav">
                         <li>
+                            {/* Home */}
                             <Link to="/">
                                 <button className="btn-menu" type="button">
                                     <i className="fas fa-home" />
@@ -21,6 +22,7 @@ class Menu extends Component {
                             </Link>
                         </li>
                         <li>
+                            {/*  */}
                             <Link to="/counter">
                                 <button className="btn-menu-text" type="button">
                                     Counter
@@ -31,13 +33,15 @@ class Menu extends Component {
 
                     <ul className="nav navbar-nav ml-auto">
                         <li>
-                            <Link to="/">
+                            {/* Register */}
+                            <Link to="/register">
                                 <button className="btn-menu" type="button">
                                     <i className="fas fa-user-plus" />
                                 </button>
                             </Link>
                         </li>
                         <li>
+                            {/*  */}
                             <Link to="/">
                                 <button className="btn-menu" type="button">
                                     <i className="fas fa-sign-in-alt" />
@@ -51,15 +55,19 @@ class Menu extends Component {
                             <i className="fas fa-bars" />
                         </button>
                         <div className="dropdown-content">
+                            {/* Home */}
                             <Link to="/">
                                 <i className="fas fa-home" />
                             </Link>
+                            {/*  */}
                             <Link to="/counter">
                                 Counter
                             </Link>
-                            <Link to="/">
+                            {/* Register */}
+                            <Link to="/register">
                                 <i className="fas fa-user-plus" />
                             </Link>
+                            {/*  */}
                             <Link to="/">
                                 <i className="fas fa-sign-in-alt" />
                             </Link>
