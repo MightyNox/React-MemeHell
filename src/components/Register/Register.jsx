@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Link} from 'react-router-dom'
+import {Redirect} from 'react-router-dom';
 import axios from 'axios'
 import qs from 'qs'
 
@@ -8,24 +8,31 @@ class Register extends Component {
         email : "",
         nickname : "",
         password : "",
-        checkBox : ""
+        checkBox : "",
+        redirect : false,
+        showError : false,
     }
 
 
-    handleSubmitOnClick = async () =>{
+    handleSubmitOnClick = async() =>{
         const body = {
             email : this.state.email,
             nickname : this.state.nickname,
             password : this.state.password,
         }
 
-        axios.post('/auth/register', qs.stringify(body))
-        .then(response => { 
-            console.log(response)
-        })
-        .catch(error => {
-            console.log(error.response)
-        })
+        try{
+            const res = await axios.post('/auth/register', qs.stringify(body))
+            
+            if(res.status !== 201){
+                throw Error(res.statusText) 
+            }
+            
+            this.setState({redirect : true})
+
+        }catch(err){
+            this.setState({showError : true})
+        }
     }
 
 
@@ -67,9 +74,35 @@ class Register extends Component {
     }
 
 
+    displayError(){
+        if(!this.state.showError){
+            return
+        }
+
+        return(
+            <div className="alert alert-danger alert-dismissible">
+                Oops! Something went wrong!
+                <button type="button" onClick={this.handleErrorAlertOnClick} className="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        )
+    }
+
+
+    handleErrorAlertOnClick = ()=>{
+        this.setState({showError : false})
+    }
+
+
     render() {
+        if(this.state.redirect){
+            return <Redirect to="/"></Redirect>
+        }
+
         return (
             <React.Fragment>
+                {this.displayError()}
                 <br/><br/><br/>
                 <div className="row">
                     <div className="col-2"/>
@@ -132,9 +165,7 @@ class Register extends Component {
 
                             {/* Submit button */}
                             <div className="row justify-content-center">
-                            <Link to="/">
-                                <button disabled={this.enableButton()} onClick={this.handleSubmitOnClick} type="submit" className="btn btn-dark">Submit</button>
-                            </Link>
+                                <button disabled={this.enableButton()} onClick={this.handleSubmitOnClick} type="button" className="btn btn-dark">Submit</button>
                             </div>
                         </form>
                     </div>
