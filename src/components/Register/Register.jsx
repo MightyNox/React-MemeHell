@@ -11,6 +11,7 @@ class Register extends Component {
         checkBox : "",
         redirect : false,
         showError : false,
+        errorMessage : "",
     }
 
 
@@ -22,15 +23,12 @@ class Register extends Component {
         }
 
         try{
-            const res = await axios.post('/auth/register', qs.stringify(body))
-            
-            if(res.status !== 201){
-                throw Error(res.statusText) 
-            }
+            await axios.post('/auth/register', qs.stringify(body))
             
             this.setState({redirect : true})
 
         }catch(err){
+            this.setState({errorMessage : err.response.data.message})
             this.setState({showError : true})
         }
     }
@@ -81,7 +79,7 @@ class Register extends Component {
 
         return(
             <div className="alert alert-danger alert-dismissible">
-                Oops! Something went wrong!
+                {this.state.errorMessage ? this.state.errorMessage : 'Oops! Something went wrong!'}
                 <button type="button" onClick={this.handleErrorAlertOnClick} className="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -97,7 +95,7 @@ class Register extends Component {
 
     render() {
         if(this.state.redirect){
-            return <Redirect to="/"></Redirect>
+            return <Redirect to="/login"></Redirect>
         }
 
         return (
@@ -119,6 +117,9 @@ class Register extends Component {
                                 </div>
                                 <div className="form-group col-md-3">
                                     <input required={true} type="text" className="form-control" onChange={this.handleNicknameOnChange} placeholder="Mr. Example" />
+                                    <small class="form-text text-muted">
+                                        Longer than 2 signs
+                                    </small>
                                 </div>
                             </div>
 
@@ -145,6 +146,9 @@ class Register extends Component {
                                 </div>
                                 <div className="form-group col-md-3">
                                     <input required={true} type="password" className="form-control" onChange={this.handlePasswdOnChange} placeholder="password" />
+                                    <small class="form-text text-muted">
+                                        Longer than 8 signs
+                                    </small>
                                 </div>
                             </div>
 
