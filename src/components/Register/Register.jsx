@@ -5,82 +5,295 @@ import qs from 'qs'
 
 class Register extends Component {
     state = {
-        email : "",
-        nickname : "",
-        password : "",
-        checkBox : "",
         redirect : false,
-        showError : false,
-        errorMessage : "",
+
+        checkBox : false,
+
+        alert:{
+            error : false,
+            errorMessage : "",
+        },
+        nickname:{
+            value : "",
+            correct:null,
+            errorMessage:""
+        },
+        email:{
+            value : "",
+            correct:null,
+            errorMessage:""
+        },
+        password:{
+            value : "",
+            correct:null,
+            errorMessage:""
+        },
+        confirmPassword : {
+            correct:null,
+            errorMessage:""
+        }
     }
 
 
     handleSubmitOnClick = async() =>{
+        const nickname = this.state.nickname
+        const email = this.state.email
+        const password = this.state.password
+        const confirmPassword = this.state.confirmPassword
+        const checkBox = this.state.checkBox
+
+
+        
+
+
+        if(!nickname.correct || !email.correct || !password.correct || !confirmPassword.correct || !checkBox ){
+            this.setState({
+                alert:{
+                    error : true,
+                    errorMessage : "You have to fill all gaps correctly!"
+                }})
+
+            return
+        }
+
         const body = {
-            email : this.state.email,
-            nickname : this.state.nickname,
-            password : this.state.password,
+            email : email.value,
+            nickname : nickname.value,
+            password : password.value,
         }
 
         try{
             await axios.post('/auth/register', qs.stringify(body))
-            
+        
             this.setState({redirect : true})
 
         }catch(err){
-            this.setState({errorMessage : err.response.data.message})
-            this.setState({showError : true})
+            this.setState({
+                alert:{
+                    error : true,
+                    errorMessage : err.response.data.message
+            }})
         }
     }
 
 
-    handleNicknameOnChange = (evt) =>{
-         this.setState({nickname : evt.target.value}) 
+    handleNicknameOnBlur = async (evt) =>{
+        const nickname = evt.target.value
+        const nicknamePattern = /^[\w\d-]{3,}$/
+
+        //Incorrect pattern
+        if(!nicknamePattern.exec(nickname))
+        {
+            this.setState({
+                nickname : {
+                    value : "",
+                    correct : false,
+                    errorMessage : "Incorrect nickname! Min. 3 signs",
+            }})
+
+            return
+
+        }
+
+        //Taken 
+        try{
+            await axios.post('/auth/check-nickname', qs.stringify({nickname : nickname}))
+        }catch(err){
+            this.setState({
+                nickname : {
+                    value : "",
+                    correct : false,
+                    errorMessage : err.response.data.message,
+            }})
+
+            return
+        }
+        
+        //Correct
+        this.setState({
+            nickname : {
+                value : nickname,
+                correct : true,
+                errorMessage : "",
+        }})
     }
 
 
-    handleEmailOnChange = (evt) =>{
-        this.setState({email : evt.target.value}) 
+    handleEmailOnBlur = async (evt) =>{
+        const email = evt.target.value
+        const emailPattern = /^[\w-]+@[\w-]+(\.[a-zA-Z]{2,3}){1,2}$/
+
+        //Incorrect pattern
+        if(!emailPattern.exec(email))
+        {
+            this.setState({
+                email : {
+                    value : "",
+                    correct : false,
+                    errorMessage : "Incorrect email!",
+            }})
+
+            return
+
+        }
+
+        //Taken 
+        try{
+            await axios.post('/auth/check-email', qs.stringify({email : email}))
+        }catch(err){
+            this.setState({
+                email : {
+                    value : "",
+                    correct : false,
+                    errorMessage : err.response.data.message,
+            }})
+
+            return
+        }
+        
+        //Correct
+        this.setState({
+            email : {
+                value : email,
+                correct : true,
+                errorMessage : "",
+        }})
     }
 
 
-    handlePasswdOnChange = (evt) =>{
-        this.setState({password : evt.target.value}) 
+    handlePasswordOnBlur = async (evt) =>{
+        const password = evt.target.value
+        const passwordPattern = /^.{8,}$/
+
+        //Incorrect pattern
+        if(!passwordPattern.exec(password))
+        {
+            this.setState({
+                password : {
+                    value : "",
+                    correct : false,
+                    errorMessage : "Password is too weak! Min. 8 signs",
+            }})
+
+            return
+        }
+
+
+        //Correct
+        this.setState({
+            password : {
+                value : password,
+                correct : true,
+                errorMessage : "",
+        }})
     }
 
 
-    handleCheckBoxOnChange = (evt) =>{
-        if(!this.state.checkBox){
-            this.setState({checkBox : evt.target.value}) 
+    handleConfirmPasswordOnBlur = async (evt) =>{
+        const password = this.state.password.value
+        const confirmPassword = evt.target.value
+
+        //Different passwords
+        if(password.length === 0 || password !== confirmPassword)
+        {
+            this.setState({
+                confirmPassword : {
+                    correct : false,
+                    errorMessage : "Passwords have to match!",
+            }})
+
+            return
+        }
+
+        //Correct
+        this.setState({
+            confirmPassword : {
+                correct : true,
+                errorMessage : "",
+        }})
+    }
+
+
+    handleNicknameError(){
+        const correct = this.state.nickname.correct
+        let returnValue = "form-control"
+
+        if(correct === false){
+            returnValue += " is-invalid"
+        }
+        else if(correct === true){
+            returnValue += " is-valid"
+        }
+
+        return returnValue
+    }
+
+
+    handleEmailError(){
+        const correct = this.state.email.correct
+        let returnValue = "form-control"
+
+        if(correct === false){
+            returnValue += " is-invalid"
+        }
+        else if(correct === true){
+            returnValue += " is-valid"
+        }
+
+        return returnValue
+    }
+
+
+    handlePasswordError(){
+        const correct = this.state.password.correct
+        let returnValue = "form-control"
+
+        if(correct === false){
+            returnValue += " is-invalid"
+        }
+        else if(correct === true){
+            returnValue += " is-valid"
+        }
+
+        return returnValue
+    }
+
+
+    handleConfirmPasswordError(){
+        const correct = this.state.confirmPassword.correct
+        let returnValue = "form-control"
+
+        if(correct === false){
+            returnValue += " is-invalid"
+        }
+        else if(correct === true){
+            returnValue += " is-valid"
+        }
+
+        return returnValue
+    }
+
+
+    handleCheckBoxOnChange = () =>{
+        const checkbox = this.state.checkBox
+
+        if(!checkbox){
+            this.setState({checkBox : true}) 
         }else{
-            this.setState({checkBox : ""}) 
+            this.setState({checkBox : false}) 
         }
     }
 
 
-    enableButton(){
-        if(this.state.email.length <= 6)
-            return true
-        if(this.state.password.length < 8)
-            return true
-        if(this.state.nickname.length < 3)
-            return true
-        if(!this.state.checkBox)
-            return true
-
-        return false
-    }
-
-
-    displayError(){
-        if(!this.state.showError){
+    displayAlert(){
+        if(!this.state.alert.error){
             return
         }
 
         return(
             <div className="alert alert-danger alert-dismissible">
-                {this.state.errorMessage ? this.state.errorMessage : 'Oops! Something went wrong!'}
-                <button type="button" onClick={this.handleErrorAlertOnClick} className="close" data-dismiss="alert" aria-label="Close">
+                {this.state.alert.errorMessage ? this.state.alert.errorMessage : 'Oops! Something went wrong!'}
+                <button type="button" onClick={this.handleAlertOnClick} className="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -88,9 +301,14 @@ class Register extends Component {
     }
 
 
-    handleErrorAlertOnClick = ()=>{
-        this.setState({showError : false})
+    handleAlertOnClick = ()=>{
+        this.setState({
+            alert:{
+                error : false,
+                errorMessage : "",
+        }})
     }
+    
 
 
     render() {
@@ -100,7 +318,7 @@ class Register extends Component {
 
         return (
             <React.Fragment>
-                {this.displayError()}
+                {this.displayAlert()}
                 <br/><br/><br/>
                 <div className="row">
                     <div className="col-2"/>
@@ -109,16 +327,16 @@ class Register extends Component {
                         <form>
                             {/* nickname */}
                             <div className="row justify-content-center">
-                                <div className="form-group  col-md-1">
+                                <div className="form-group col-md-1">
                                     <label className="col-form-label">
                                         <span className="text-danger font-weight-bold">*</span>
                                         Nickname:
                                     </label>
                                 </div>
                                 <div className="form-group col-md-3">
-                                    <input required={true} type="text" className="form-control" onChange={this.handleNicknameOnChange} placeholder="Mr. Example" />
-                                    <small class="form-text text-muted">
-                                        Longer than 2 signs
+                                    <input required={true} type="text" className={this.handleNicknameError()} onBlur={this.handleNicknameOnBlur} placeholder="Mr. Example" />
+                                    <small className="form-text text-danger">
+                                        {this.state.nickname.errorMessage}
                                     </small>
                                 </div>
                             </div>
@@ -132,7 +350,10 @@ class Register extends Component {
                                     </label>
                                 </div>
                                 <div className="form-group col-md-3">
-                                    <input required={true} type="text" className="form-control" onChange={this.handleEmailOnChange} placeholder="simple@email.com" />
+                                    <input required={true} type="text" className={this.handleEmailError()} onBlur={this.handleEmailOnBlur} placeholder="simple@email.com" />
+                                    <small className="form-text text-danger">
+                                        {this.state.email.errorMessage}
+                                    </small>
                                 </div>
                             </div>
 
@@ -145,9 +366,25 @@ class Register extends Component {
                                     </label>
                                 </div>
                                 <div className="form-group col-md-3">
-                                    <input required={true} type="password" className="form-control" onChange={this.handlePasswdOnChange} placeholder="password" />
-                                    <small class="form-text text-muted">
-                                        Longer than 8 signs
+                                    <input required={true} type="password" className={this.handlePasswordError()} onBlur={this.handlePasswordOnBlur} placeholder="password" />
+                                    <small className="form-text text-danger">
+                                        {this.state.password.errorMessage}
+                                    </small>
+                                </div>
+                            </div>
+
+                            {/* confirm password */}
+                            <div className="row justify-content-center">
+                                <div className="form-group  col-md-1">
+                                    <label className="col-form-label">
+                                        <span className="text-danger font-weight-bold">*</span>
+                                        Confirm:
+                                    </label>
+                                </div>
+                                <div className="form-group col-md-3">
+                                    <input required={true} type="password" className={this.handleConfirmPasswordError()} onBlur={this.handleConfirmPasswordOnBlur} placeholder="password" />
+                                    <small className="form-text text-danger">
+                                        {this.state.confirmPassword.errorMessage}
                                     </small>
                                 </div>
                             </div>
@@ -169,7 +406,7 @@ class Register extends Component {
 
                             {/* Submit button */}
                             <div className="row justify-content-center">
-                                <button disabled={this.enableButton()} onClick={this.handleSubmitOnClick} type="button" className="btn btn-dark">Submit</button>
+                                <button onClick={this.handleSubmitOnClick} type="button" className="btn btn-dark">Submit</button>
                             </div>
                         </form>
                     </div>
