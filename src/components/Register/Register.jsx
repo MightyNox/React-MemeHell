@@ -2,16 +2,16 @@ import React, { Component } from 'react'
 import {Redirect} from 'react-router-dom';
 import axios from 'axios'
 import qs from 'qs'
-
 class Register extends Component {
+    
     state = {
         redirect : false,
 
         checkBox : false,
 
         alert:{
-            error : false,
-            errorMessage : "",
+            display : false,
+            message : ""
         },
         nickname:{
             value : "",
@@ -42,15 +42,11 @@ class Register extends Component {
         const confirmPassword = this.state.confirmPassword
         const checkBox = this.state.checkBox
 
-
-        
-
-
         if(!nickname.correct || !email.correct || !password.correct || !confirmPassword.correct || !checkBox ){
             this.setState({
                 alert:{
-                    error : true,
-                    errorMessage : "You have to fill all gaps correctly!"
+                    display : true,
+                    message : "You have to fill all gaps correctly!"
                 }})
 
             return
@@ -70,8 +66,8 @@ class Register extends Component {
         }catch(err){
             this.setState({
                 alert:{
-                    error : true,
-                    errorMessage : err.response.data.message
+                    display : true,
+                    message : err.response.data.message
             }})
         }
     }
@@ -286,13 +282,13 @@ class Register extends Component {
 
 
     displayAlert(){
-        if(!this.state.alert.error){
+        if(!this.state.alert.display){
             return
         }
 
         return(
             <div className="alert alert-danger alert-dismissible">
-                {this.state.alert.errorMessage ? this.state.alert.errorMessage : 'Oops! Something went wrong!'}
+                {this.state.alert.message ? this.state.alert.message : 'Oops! Something went wrong!'}
                 <button type="button" onClick={this.handleAlertOnClick} className="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -304,8 +300,8 @@ class Register extends Component {
     handleAlertOnClick = ()=>{
         this.setState({
             alert:{
-                error : false,
-                errorMessage : "",
+                display : false,
+                message : "",
         }})
     }
     
@@ -313,7 +309,14 @@ class Register extends Component {
 
     render() {
         if(this.state.redirect){
-            return <Redirect to="/login"></Redirect>
+            return (
+                <React.Fragment>
+                    <Redirect to={{
+                            pathname: "/login",
+                            alert: "User successfully created! Now you can sign in :)"
+                        }}/>
+                </React.Fragment>
+            )
         }
 
         return (
@@ -324,6 +327,14 @@ class Register extends Component {
                     <div className="col-2"/>
 
                     <div className="col-8">
+                        <div className="row justify-content-center offset-6">
+                            <h4>
+                                Create new user
+                            </h4>
+                        </div>
+
+                        <br/>
+
                         <form>
                             {/* nickname */}
                             <div className="row justify-content-center">
@@ -406,7 +417,7 @@ class Register extends Component {
 
                             {/* Submit button */}
                             <div className="row justify-content-center offset-6">
-                                <button onClick={this.handleSubmitOnClick} type="button" className="btn btn-dark">Submit</button>
+                                <button onClick={this.handleSubmitOnClick} type="button" className="btn btn-dark">Sign Up</button>
                             </div>
                         </form>
                     </div>

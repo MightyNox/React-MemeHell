@@ -41,8 +41,8 @@ class Menu extends Component {
                             </Link>
                         </li>
                         <li>
-                            {/*  */}
-                            <Link to="/">
+                            {/* Login */}
+                            <Link to="/login">
                                 <button className="btn-menu" type="button">
                                     <i className="fas fa-sign-in-alt" />
                                 </button>
@@ -67,8 +67,8 @@ class Menu extends Component {
                             <Link to="/register">
                                 <i className="fas fa-user-plus" />
                             </Link>
-                            {/*  */}
-                            <Link to="/">
+                            {/* Login */}
+                            <Link to="/login">
                                 <i className="fas fa-sign-in-alt" />
                             </Link>
                         </div>
