@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
+import axios from 'axios'
+import qs from 'qs'
 
 class Login extends Component {
     
@@ -22,6 +24,42 @@ class Login extends Component {
             value : "",
             correct:null,
             errorMessage:""
+        }
+    }
+
+
+    handleSubmitOnClick = async() =>{
+        const login = this.state.login
+        const password = this.state.password
+
+        if(!login.correct || !password.correct){
+            this.setState({
+                alert:{
+                    display : true,
+                    props : alert.props,
+                    message : "You have to fill all gaps correctly!"
+                }})
+
+            return
+        }
+
+        const body = {
+            login : login.value,
+            password : password.value,
+        }
+
+        try{
+            await axios.post('/auth/login', qs.stringify(body))
+        
+            this.setState({redirect : true})
+
+        }catch(err){
+            this.setState({
+                alert:{
+                    display : true,
+                    props : alert.props,
+                    message : err.response.data.message
+            }})
         }
     }
 
