@@ -197,11 +197,11 @@ class Login extends Component {
             <React.Fragment>
                 {this.displayAlert()}
                 <br/><br/><br/>
-                <div className="row container">
+                <div className="row container-fluid">
                     <div className="col-2"/>
 
                     <div className="col-8">
-                        <div className="row justify-content-center offset-6">
+                        <div className="row justify-content-center">
                                 <h4>
                                     Login to your account
                                 </h4>
@@ -212,13 +212,13 @@ class Login extends Component {
                         <form>
                             {/* nickname or email */}
                             <div className="row justify-content-center">
-                                <div className="form-group col-md-2 offset-6">
+                                <div className="form-group col-md-2">
                                     <label className="col-form-label">
                                         <span className="text-danger font-weight-bold">*</span>
                                         Login:
                                     </label>
                                 </div>
-                                <div className="form-group col-md-4">
+                                <div className="form-group col-md-3">
                                     <input required={true} type="text" className={this.handleLoginError()} onBlur={this.handleLoginOnBlur} placeholder="Mr. Example" />
                                     <small className="form-text text-danger">
                                         {this.state.login.errorMessage}
@@ -228,13 +228,13 @@ class Login extends Component {
 
                             {/* password */}
                             <div className="row justify-content-center">
-                                <div className="form-group col-md-2 offset-6">
+                                <div className="form-group col-md-2">
                                     <label className="col-form-label">
                                         <span className="text-danger font-weight-bold">*</span>
                                         Password:
                                     </label>
                                 </div>
-                                <div className="form-group col-md-4">
+                                <div className="form-group col-md-3">
                                     <input required={true} type="password" className={this.handlePasswordError()} onBlur={this.handlePasswordOnBlur} placeholder="password" />
                                     <small className="form-text text-danger">
                                         {this.state.password.errorMessage}
@@ -245,7 +245,7 @@ class Login extends Component {
                             <br/>
 
                             {/* Submit button */}
-                            <div className="row justify-content-center offset-6">
+                            <div className="row justify-content-center">
                                 <button onClick={this.handleSubmitOnClick} type="button" className="btn btn-dark">Sign In</button>
                             </div>
                         </form>

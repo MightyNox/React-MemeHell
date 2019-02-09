@@ -2,10 +2,11 @@ import React, {Component} from 'react'
 import {BrowserRouter, Route} from 'react-router-dom'
 
 import Counter from '../Counter/Coutner'
-import Home from '../Home/Home';
-import Menu from '../Menu/Menu';
-import Register from '../Register/Register';
-import Login from '../Login/Login';
+import Home from '../Home/Home'
+import Menu from '../Menu/Menu'
+import Register from '../Register/Register'
+import Login from '../Login/Login'
+import Logout from '../Logout/Logout'
 
 class App extends Component{
     render(){
@@ -17,6 +18,7 @@ class App extends Component{
                     <Route exact path='/counter' component={Counter} />
                     <Route exact path='/register' component={Register} />
                     <Route exact path='/login' component={Login} />
+                    <Route exact path='/logout' component={Logout} />
                 </div>
             </BrowserRouter>
         )

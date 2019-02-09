@@ -323,11 +323,11 @@ class Register extends Component {
             <React.Fragment>
                 {this.displayAlert()}
                 <br/><br/><br/>
-                <div className="row container">
+                <div className="row container-fluid">
                     <div className="col-2"/>
 
                     <div className="col-8">
-                        <div className="row justify-content-center offset-6">
+                        <div className="row justify-content-center">
                             <h4>
                                 Create new user
                             </h4>
@@ -338,13 +338,13 @@ class Register extends Component {
                         <form>
                             {/* nickname */}
                             <div className="row justify-content-center">
-                                <div className="form-group col-md-2 offset-6">
+                                <div className="form-group col-md-2">
                                     <label className="col-form-label">
                                         <span className="text-danger font-weight-bold">*</span>
                                         Nickname:
                                     </label>
                                 </div>
-                                <div className="form-group col-md-4">
+                                <div className="form-group col-md-3">
                                     <input required={true} type="text" className={this.handleNicknameError()} onBlur={this.handleNicknameOnBlur} placeholder="Mr. Example" />
                                     <small className="form-text text-danger">
                                         {this.state.nickname.errorMessage}
@@ -354,13 +354,13 @@ class Register extends Component {
 
                             {/* email */}
                             <div className="row justify-content-center">
-                                <div className="form-group col-md-2 offset-6">
+                                <div className="form-group col-md-2">
                                     <label className="col-form-label">
                                         <span className="text-danger font-weight-bold">*</span>
                                         Email:
                                     </label>
                                 </div>
-                                <div className="form-group col-md-4">
+                                <div className="form-group col-md-3">
                                     <input required={true} type="text" className={this.handleEmailError()} onBlur={this.handleEmailOnBlur} placeholder="simple@email.com" />
                                     <small className="form-text text-danger">
                                         {this.state.email.errorMessage}
@@ -370,13 +370,13 @@ class Register extends Component {
 
                             {/* password */}
                             <div className="row justify-content-center">
-                                <div className="form-group col-md-2 offset-6">
+                                <div className="form-group col-md-2">
                                     <label className="col-form-label">
                                         <span className="text-danger font-weight-bold">*</span>
                                         Password:
                                     </label>
                                 </div>
-                                <div className="form-group col-md-4">
+                                <div className="form-group col-md-3">
                                     <input required={true} type="password" className={this.handlePasswordError()} onBlur={this.handlePasswordOnBlur} placeholder="password" />
                                     <small className="form-text text-danger">
                                         {this.state.password.errorMessage}
@@ -386,13 +386,13 @@ class Register extends Component {
 
                             {/* confirm password */}
                             <div className="row justify-content-center">
-                                <div className="form-group col-md-2 offset-6">
+                                <div className="form-group col-md-2">
                                     <label className="col-form-label">
                                         <span className="text-danger font-weight-bold">*</span>
                                         Confirm:
                                     </label>
                                 </div>
-                                <div className="form-group col-md-4">
+                                <div className="form-group col-md-3">
                                     <input required={true} type="password" className={this.handleConfirmPasswordError()} onBlur={this.handleConfirmPasswordOnBlur} placeholder="password" />
                                     <small className="form-text text-danger">
                                         {this.state.confirmPassword.errorMessage}
@@ -403,7 +403,7 @@ class Register extends Component {
                             <br/>
 
                             {/* check box */}
-                            <div className="row justify-content-center offset-6">
+                            <div className="row justify-content-center">
                                 <div className="form-check">
                                     <input required={true} onChange={this.handleCheckBoxOnChange} type="checkbox" className="form-check-input" id="exampleCheck1" />
                                     <label className="form-check-label">
@@ -416,7 +416,7 @@ class Register extends Component {
                             <br/>
 
                             {/* Submit button */}
-                            <div className="row justify-content-center offset-6">
+                            <div className="row justify-content-center">
                                 <button onClick={this.handleSubmitOnClick} type="button" className="btn btn-dark">Sign Up</button>
                             </div>
                         </form>
