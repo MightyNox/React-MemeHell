@@ -163,8 +163,11 @@ class Login extends Component {
         }
 
         if(propsAlert){
-            alertType="success"
-            message=propsAlert
+            if(propsAlert.error === false){
+                alertType="success"
+            }
+                
+            message=propsAlert.message
         }
 
         return(
