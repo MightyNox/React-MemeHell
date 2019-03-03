@@ -77,7 +77,10 @@ class Register extends Component {
         const nickname = evt.target.value
         const nicknamePattern = /^[\w\d-]{3,}$/
 
-        //Incorrect pattern
+        if(nickname.length === 0){
+            return
+        }
+
         if(!nicknamePattern.exec(nickname))
         {
             this.setState({
@@ -91,7 +94,6 @@ class Register extends Component {
 
         }
 
-        //Taken 
         try{
             await axios.post('/auth/check-nickname', qs.stringify({nickname : nickname}))
         }catch(err){
@@ -105,7 +107,6 @@ class Register extends Component {
             return
         }
         
-        //Correct
         this.setState({
             nickname : {
                 value : nickname,
@@ -119,7 +120,10 @@ class Register extends Component {
         const email = evt.target.value
         const emailPattern = /^[\w-]+@[\w-]+(\.[a-zA-Z]{2,3}){1,2}$/
 
-        //Incorrect pattern
+        if(email.length === 0){
+            return
+        }
+
         if(!emailPattern.exec(email))
         {
             this.setState({
@@ -133,7 +137,6 @@ class Register extends Component {
 
         }
 
-        //Taken 
         try{
             await axios.post('/auth/check-email', qs.stringify({email : email}))
         }catch(err){
@@ -147,7 +150,6 @@ class Register extends Component {
             return
         }
         
-        //Correct
         this.setState({
             email : {
                 value : email,
@@ -161,7 +163,10 @@ class Register extends Component {
         const password = evt.target.value
         const passwordPattern = /^.{8,}$/
 
-        //Incorrect pattern
+        if(password.length === 0){
+            return
+        }
+
         if(!passwordPattern.exec(password))
         {
             this.setState({
@@ -174,8 +179,6 @@ class Register extends Component {
             return
         }
 
-
-        //Correct
         this.setState({
             password : {
                 value : password,
@@ -189,7 +192,10 @@ class Register extends Component {
         const password = this.state.password.value
         const confirmPassword = evt.target.value
 
-        //Different passwords
+        if(confirmPassword.length === 0){
+            return
+        }
+
         if(password.length === 0 || password !== confirmPassword)
         {
             this.setState({
@@ -201,7 +207,6 @@ class Register extends Component {
             return
         }
 
-        //Correct
         this.setState({
             confirmPassword : {
                 correct : true,
