@@ -69,7 +69,10 @@ class Login extends Component {
         const nicknamePattern = /^[\w\d-]{3,}$/
         const emailPattern = /^[\w-]+@[\w-]+(\.[a-zA-Z]{2,3}){1,2}$/
 
-        //Incorrect pattern
+        if(login.length === 0){
+            return
+        }
+
         if(!nicknamePattern.exec(login) && !emailPattern.exec(login))
         {
             this.setState({
@@ -83,7 +86,6 @@ class Login extends Component {
 
         }
 
-        //Correct
         this.setState({
             login : {
                 value : login,
@@ -97,7 +99,10 @@ class Login extends Component {
         const password = evt.target.value
         const passwordPattern = /^.{8,}$/
 
-        //Incorrect pattern
+        if(password.length === 0){
+            return
+        }
+        
         if(!passwordPattern.exec(password))
         {
             this.setState({
@@ -110,8 +115,6 @@ class Login extends Component {
             return
         }
          
-
-        //Correct
         this.setState({
             password : {
                 value : password,
