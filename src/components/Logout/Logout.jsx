@@ -1,38 +1,34 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
-import axios from 'axios'
 
 class Login extends Component {
+
     state = {
         rediret : false,
-        alert : {
-            error: true,
-            message : ""
-        }
+        message : "",
+        error : ""
     }
 
     handleLogout(){
-        axios.post('/auth/logout')
-        .then( res => {
-            this.setState({
-                rediret : true,
-                alert : {
-                    error : false,
-                    message : "You are logged out!"
-                }
-            })
-        })
-        .catch(err => {
-            this.setState({
-                rediret : true,
-                alert : {
-                    error : true,
-                    message : err.response.data.message
-                }
-            })
+
+        let message
+        let error
+
+        if(localStorage.getItem("user")){
+            localStorage.removeItem("user")
+            message = "You are logged out!"
+            error = false
+        }else{
+            message = "You are not signed in!"
+            error = true
+        }
+
+        this.setState({
+            rediret : true,
+            message : message,
+            error : error
         })
     }
-
 
     render() {
 
@@ -41,7 +37,10 @@ class Login extends Component {
                 <React.Fragment>
                    <Redirect to={{
                        pathname: "/login",
-                       alert: this.state.alert
+                       alert: {
+                            error : this.state.error,
+                            message : this.state.message
+                        }
                     }}/>
                </React.Fragment>
            )

@@ -49,8 +49,10 @@ class Login extends Component {
         }
 
         try{
-            await axios.post('/auth/login', qs.stringify(body))
-        
+            const user = await axios.post('/auth/login', qs.stringify(body))
+            
+            localStorage.setItem("user", user)
+
             this.setState({redirect : true})
 
         }catch(err){
@@ -195,6 +197,10 @@ class Login extends Component {
 
 
     render() {
+        if(localStorage.getItem("user") !== null){
+            return <Redirect to="/"/>
+        }
+
         if(this.state.redirect){
             return <Redirect to="/"/>
         }
