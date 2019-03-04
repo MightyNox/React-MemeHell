@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 
-class Login extends Component {
+class Logout extends Component {
 
     state = {
         rediret : false,
@@ -54,4 +54,4 @@ class Login extends Component {
     }
 }
 
-export default Login;
+export default Logout;
