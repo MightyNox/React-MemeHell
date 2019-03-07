@@ -30,7 +30,7 @@ nav.navbar div.dropdown {
 }
 
 @media (max-width: 1000px) {
-    nav.navbar ul     { display: none; }
+    nav.navbar div.navbar-nav     { display: none; }
     nav.navbar div.dropdown { display: inline-block; }
 }
 

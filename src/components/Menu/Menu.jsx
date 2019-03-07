@@ -19,6 +19,8 @@ class Menu extends Component {
                                 <i className="fas fa-home" />
                             </button>
                         </Link>
+                    </div>
+                    <div className="navbar-nav">
                         {/*  */}
                         <Link to="/counter">
                             <button className="btn-menu-text" type="button">
@@ -65,20 +67,24 @@ class Menu extends Component {
             )
         }else{
             return(
-                <div className="nav navbar-nav ml-auto">
-                    {/* Register */}
-                    <Link to="/register">
-                        <button className="btn-menu" type="button">
-                            <i className="fas fa-user-plus" />
-                        </button>
-                    </Link>
-                    {/* Login */}
-                    <Link to="/login">
-                        <button className="btn-menu" type="button">
-                            <i className="fas fa-sign-in-alt" />
-                        </button>
-                    </Link>
-                </div>
+                <React.Fragment>
+                    <div className="nav navbar-nav ml-auto">
+                        {/* Register */}
+                        <Link to="/register">
+                            <button className="btn-menu" type="button">
+                                <i className="fas fa-user-plus" />
+                            </button>
+                        </Link>
+                    </div>
+                    <div className="nav navbar-nav">
+                        {/* Login */}
+                        <Link to="/login">
+                            <button className="btn-menu" type="button">
+                                <i className="fas fa-sign-in-alt" />
+                            </button>
+                        </Link>
+                    </div>
+                </React.Fragment>
             )
         }
     }
