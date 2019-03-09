@@ -1,33 +1,29 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 
+import AlertContext from '../Alert/AlertContext'
 class Logout extends Component {
 
     state = {
         rediret : false,
-        message : "",
-        error : ""
     }
 
     handleLogout(){
 
         let message
-        let error
 
         if(localStorage.getItem("user")){
             localStorage.removeItem("user")
-            message = "You are logged out!"
-            error = false
+            message = 31
         }else{
-            message = "You are not signed in!"
-            error = true
+            message = 32
         }
 
         this.setState({
             rediret : true,
-            message : message,
-            error : error
         })
+
+        this.context.setAlert(message)
     }
 
     componentDidMount(){
@@ -40,11 +36,7 @@ class Logout extends Component {
             return (
                 <React.Fragment>
                    <Redirect to={{
-                       pathname: "/login",
-                       alert: {
-                            error : this.state.error,
-                            message : this.state.message
-                        }
+                       pathname: "/login"
                     }}/>
                </React.Fragment>
            )
@@ -53,5 +45,7 @@ class Logout extends Component {
         return null
     }
 }
+
+Logout.contextType = AlertContext
 
 export default Logout;

@@ -13,6 +13,14 @@ const statusMessages = {
         "You have to fill all gaps correctly!", 
         "danger"
     ],
+    31 : [
+        "You are logged out!", 
+        "success"
+    ],
+    32 : [
+        "You are not signed in!", 
+        "danger"
+    ],
 
     //51-100  Data status
     49 : [
