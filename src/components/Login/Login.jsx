@@ -5,6 +5,8 @@ import qs from 'qs'
 
 import statusMessages from '../../config/Status'
 import pattern from '../../config/Pattern';
+import Alert from '../Alert/Alert'
+import AlertContext from '../Alert/AlertContext'
 class Login extends Component {
     
     state = {
@@ -12,11 +14,6 @@ class Login extends Component {
 
         checkBox : false,
 
-        alert:{
-            display : false,
-            props : false,
-            message : null
-        },
         login:{
             value : null,
             correct : false,
@@ -35,13 +32,8 @@ class Login extends Component {
         const password = this.state.password
 
         if(!login.correct || !password.correct){
-            this.setState({
-                alert:{
-                    display : true,
-                    props : alert.props,
-                    message : 21
-                }})
-
+            
+            this.context.setAlert(21)
             return
         }
 
@@ -58,12 +50,15 @@ class Login extends Component {
             this.setState({redirect : true})
 
         }catch(err){
-            this.setState({
-                alert:{
-                    display : true,
-                    props : false,
-                    message : err.response.data.message
-            }})
+
+            const status = err.response.status
+            if(status === 400){
+                this.context.setAlert(22)
+            }else if(status === 500){
+                this.context.setAlert(0)
+            }else{
+                this.context.setAlert(0)
+            }
         }
     }
 
@@ -165,46 +160,6 @@ class Login extends Component {
     }
 
 
-    displayAlert(){
-        const alert = this.state.alert
-        const propsAlert=this.props.location.alert
-
-        let alertType="danger"
-        let message="Oops! Something went wrong!"
-
-        if(!alert.display && (!propsAlert || alert.props)){
-            return
-        }
-
-        if(propsAlert){
-            if(propsAlert.error === false){
-                alertType="success"
-            }
-                
-            message=propsAlert.message
-        }
-
-        return(
-            <div className={"alert alert-"+alertType+" alert-dismissible"}>
-                {alert.message ? alert.message : message}
-                <button type="button" onClick={this.handleAlertOnClick} className="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        )
-    }
-
-
-    handleAlertOnClick = ()=>{
-        this.setState({
-            alert:{
-                display : false,
-                props : true,
-                message : "",
-        }})
-    }
-
-
     render() {
         if(localStorage.getItem("user") !== null){
             return <Redirect to="/"/>
@@ -216,8 +171,9 @@ class Login extends Component {
 
         return (
             <React.Fragment>
-                {this.displayAlert()}
-                <br/><br/><br/>
+                
+                <Alert/>
+
                 <div className="row container-fluid">
                     <div className="col-2"/>
 
@@ -275,5 +231,7 @@ class Login extends Component {
         )
     }
 }
+
+Login.contextType = AlertContext
 
 export default Login;

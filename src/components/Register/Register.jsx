@@ -74,6 +74,8 @@ class Register extends Component {
                 redirect : true
             })
 
+            this.context.setAlert(33)
+
         }catch(err){
             this.context.setAlert(0)
         }
@@ -283,11 +285,7 @@ class Register extends Component {
             return (
                 <React.Fragment>
                     <Redirect to={{
-                            pathname: "/login",
-                            alert: {
-                                error : false,
-                                message : "User successfully created! Now you can sign in :)"
-                            }
+                            pathname: "/login"
                         }}/>
                 </React.Fragment>
             )
