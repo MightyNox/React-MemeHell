@@ -2,36 +2,42 @@ import React, { Component } from 'react'
 import {Redirect} from 'react-router-dom';
 import axios from 'axios'
 import qs from 'qs'
+
+import statusMessages from '../../config/Status'
+import pattern from '../../config/Pattern'
+
 class Register extends Component {
     
     state = {
+
         redirect : false,
 
-        checkBox : false,
+        alert : null,
 
-        alert:{
-            display : false,
-            message : ""
-        },
         nickname:{
-            value : "",
-            correct:null,
-            errorMessage:""
+            value : null,
+            correct : false,
+            message : null
         },
+
         email:{
-            value : "",
-            correct:null,
-            errorMessage:""
+            value : null,
+            correct : false,
+            message : null
         },
+
         password:{
-            value : "",
-            correct:null,
-            errorMessage:""
+            value : null,
+            correct : false,
+            message : null
         },
+
         confirmPassword : {
-            correct:null,
-            errorMessage:""
-        }
+            correct : false,
+            message : null
+        },
+
+        checkBox : false,
     }
 
 
@@ -42,13 +48,17 @@ class Register extends Component {
         const confirmPassword = this.state.confirmPassword
         const checkBox = this.state.checkBox
 
-        if(!nickname.correct || !email.correct || !password.correct || !confirmPassword.correct || !checkBox ){
-            this.setState({
-                alert:{
-                    display : true,
-                    message : "You have to fill all gaps correctly!"
-                }})
+        if(
+            !nickname.correct || 
+            !email.correct || 
+            !password.correct || 
+            !confirmPassword.correct || 
+            !checkBox 
+            ){
 
+            this.setState({
+                alert : 21
+            })
             return
         }
 
@@ -61,119 +71,119 @@ class Register extends Component {
         try{
             await axios.post('/auth/register', qs.stringify(body))
         
-            this.setState({redirect : true})
+            this.setState({
+                redirect : true
+            })
 
         }catch(err){
+            console.log(err.response.data.message)
             this.setState({
-                alert:{
-                    display : true,
-                    message : err.response.data.message
-            }})
+                alert : 0
+            })
         }
     }
 
 
     handleNicknameOnBlur = async (evt) =>{
         const nickname = evt.target.value
-        const nicknamePattern = /^[\w\d-]{3,}$/
 
         if(nickname.length === 0){
             return
         }
 
-        if(!nicknamePattern.exec(nickname))
+        if(!pattern.nickname.exec(nickname))
         {
             this.setState({
                 nickname : {
-                    value : "",
+                    value : null,
                     correct : false,
-                    errorMessage : "Incorrect nickname! Min. 3 signs",
+                    message : 53
             }})
 
             return
-
         }
 
         try{
             await axios.post('/auth/check-nickname', qs.stringify({nickname : nickname}))
+
+            this.setState({
+                nickname : {
+                    value : nickname,
+                    correct : true,
+                    message : 51
+            }})
+
         }catch(err){
             this.setState({
                 nickname : {
-                    value : "",
+                    value : null,
                     correct : false,
-                    errorMessage : err.response.data.message,
+                    message : 52
             }})
-
-            return
         }
-        
-        this.setState({
-            nickname : {
-                value : nickname,
-                correct : true,
-                errorMessage : "",
-        }})
     }
 
 
     handleEmailOnBlur = async (evt) =>{
         const email = evt.target.value
-        const emailPattern = /^[\w-]+@[\w-]+(\.[a-zA-Z]{2,3}){1,2}$/
 
         if(email.length === 0){
             return
         }
 
-        if(!emailPattern.exec(email))
+        if(!pattern.email.exec(email))
         {
             this.setState({
                 email : {
-                    value : "",
+                    value : null,
                     correct : false,
-                    errorMessage : "Incorrect email!",
+                    message : 56
             }})
 
             return
-
         }
 
         try{
             await axios.post('/auth/check-email', qs.stringify({email : email}))
+
+            this.setState({
+                email : {
+                    value : email,
+                    correct : true,
+                    message : 54
+            }})
+
         }catch(err){
             this.setState({
                 email : {
-                    value : "",
+                    value : null,
                     correct : false,
-                    errorMessage : err.response.data.message,
+                    message : 55
             }})
-
-            return
         }
-        
-        this.setState({
-            email : {
-                value : email,
-                correct : true,
-                errorMessage : "",
-        }})
     }
 
 
     handlePasswordOnBlur = async (evt) =>{
         const password = evt.target.value
-        const passwordPattern = /^.{8,}$/
+
+        this.setState({
+            confirmPassword : {
+                correct : false,
+                message : null
+        }})
 
         if(password.length === 0){
             return
         }
 
-        if(!passwordPattern.exec(password))
+        if(!pattern.password.exec(password))
         {
             this.setState({
                 password : {
-                    value : "",
+                    value : null,
                     correct : false,
-                    errorMessage : "Password is too weak! Min. 8 signs",
+                    message : 58
             }})
 
             return
@@ -183,7 +193,7 @@ class Register extends Component {
             password : {
                 value : password,
                 correct : true,
-                errorMessage : "",
+                message : 57
         }})
     }
 
@@ -191,6 +201,16 @@ class Register extends Component {
     handleConfirmPasswordOnBlur = async (evt) =>{
         const password = this.state.password.value
         const confirmPassword = evt.target.value
+
+        if(password === null){
+            this.setState({
+                confirmPassword : {
+                    correct : false,
+                    message : 61
+            }})
+
+            return
+        }
 
         if(confirmPassword.length === 0){
             return
@@ -201,7 +221,7 @@ class Register extends Component {
             this.setState({
                 confirmPassword : {
                     correct : false,
-                    errorMessage : "Passwords have to match!",
+                    message : 60
             }})
 
             return
@@ -210,68 +230,8 @@ class Register extends Component {
         this.setState({
             confirmPassword : {
                 correct : true,
-                errorMessage : "",
+                message : 59
         }})
-    }
-
-
-    handleNicknameError(){
-        const correct = this.state.nickname.correct
-        let returnValue = "form-control"
-
-        if(correct === false){
-            returnValue += " is-invalid"
-        }
-        else if(correct === true){
-            returnValue += " is-valid"
-        }
-
-        return returnValue
-    }
-
-
-    handleEmailError(){
-        const correct = this.state.email.correct
-        let returnValue = "form-control"
-
-        if(correct === false){
-            returnValue += " is-invalid"
-        }
-        else if(correct === true){
-            returnValue += " is-valid"
-        }
-
-        return returnValue
-    }
-
-
-    handlePasswordError(){
-        const correct = this.state.password.correct
-        let returnValue = "form-control"
-
-        if(correct === false){
-            returnValue += " is-invalid"
-        }
-        else if(correct === true){
-            returnValue += " is-valid"
-        }
-
-        return returnValue
-    }
-
-
-    handleConfirmPasswordError(){
-        const correct = this.state.confirmPassword.correct
-        let returnValue = "form-control"
-
-        if(correct === false){
-            returnValue += " is-invalid"
-        }
-        else if(correct === true){
-            returnValue += " is-valid"
-        }
-
-        return returnValue
     }
 
 
@@ -286,39 +246,78 @@ class Register extends Component {
     }
 
 
-    displayAlert(){
-        if(!this.state.alert.display){
-            return
+    handleFormError(field){
+        let message = field.message
+        let returnValue = "form-control"
+
+        if(message !== null){
+            message = statusMessages[message][1]
+            
+            if(message === "danger"){
+                returnValue += " is-invalid"
+            }
+            else if(message === "success"){
+                returnValue += " is-valid"
+            }
         }
 
-        return(
-            <div className="alert alert-danger alert-dismissible">
-                {this.state.alert.message ? this.state.alert.message : 'Oops! Something went wrong!'}
-                <button type="button" onClick={this.handleAlertOnClick} className="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        )
-    }
-
-
-    handleAlertOnClick = ()=>{
-        this.setState({
-            alert:{
-                display : false,
-                message : "",
-        }})
+        return returnValue
     }
     
 
+    handleFormMessage(field){
+        let message = field.message
+        let returnValue = null
 
+        if(message !== null){
+            const statusMessage = statusMessages[message]
+
+            returnValue = (
+                <small className={"form-text text-"+statusMessage[1]+""}>
+                    {statusMessage[0]}
+                </small>
+            )
+        }
+
+        return returnValue
+    }
+
+
+    displayAlert(){
+        if(this.state.alert !== null){
+            const statusMessage = statusMessages[this.state.alert]
+            return(
+                <div className={"alert alert-"+ statusMessage[1] +" alert-dismissible"}>
+                    {statusMessage[0]}
+                    <button type="button" onClick={this.handleAlertOnClick} className="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            )
+            
+        }else{
+            return
+        }
+
+        
+    }
+
+    handleAlertOnClick = ()=>{
+        this.setState({
+            alert : null
+        })
+    }
+    
     render() {
         if(this.state.redirect){
             return (
                 <React.Fragment>
                     <Redirect to={{
                             pathname: "/login",
-                            alert: "User successfully created! Now you can sign in :)"
+                            alert: {
+                                error : false,
+                                message : "User successfully created! Now you can sign in :)"
+                            }
                         }}/>
                 </React.Fragment>
             )
@@ -350,10 +349,8 @@ class Register extends Component {
                                     </label>
                                 </div>
                                 <div className="form-group col-md-3">
-                                    <input required={true} type="text" className={this.handleNicknameError()} onBlur={this.handleNicknameOnBlur} placeholder="Mr. Example" />
-                                    <small className="form-text text-danger">
-                                        {this.state.nickname.errorMessage}
-                                    </small>
+                                    <input required={true} type="text" className={this.handleFormError(this.state.nickname)} onBlur={this.handleNicknameOnBlur} placeholder="Mr. Example" />
+                                    {this.handleFormMessage(this.state.nickname)}
                                 </div>
                             </div>
 
@@ -366,10 +363,8 @@ class Register extends Component {
                                     </label>
                                 </div>
                                 <div className="form-group col-md-3">
-                                    <input required={true} type="text" className={this.handleEmailError()} onBlur={this.handleEmailOnBlur} placeholder="simple@email.com" />
-                                    <small className="form-text text-danger">
-                                        {this.state.email.errorMessage}
-                                    </small>
+                                    <input required={true} type="text" className={this.handleFormError(this.state.email)} onBlur={this.handleEmailOnBlur} placeholder="simple@email.com" />
+                                    {this.handleFormMessage(this.state.email)}
                                 </div>
                             </div>
 
@@ -382,10 +377,8 @@ class Register extends Component {
                                     </label>
                                 </div>
                                 <div className="form-group col-md-3">
-                                    <input required={true} type="password" className={this.handlePasswordError()} onBlur={this.handlePasswordOnBlur} placeholder="password" />
-                                    <small className="form-text text-danger">
-                                        {this.state.password.errorMessage}
-                                    </small>
+                                    <input required={true} type="password" className={this.handleFormError(this.state.password)} onBlur={this.handlePasswordOnBlur} placeholder="password" />
+                                    {this.handleFormMessage(this.state.password)}
                                 </div>
                             </div>
 
@@ -398,10 +391,8 @@ class Register extends Component {
                                     </label>
                                 </div>
                                 <div className="form-group col-md-3">
-                                    <input required={true} type="password" className={this.handleConfirmPasswordError()} onBlur={this.handleConfirmPasswordOnBlur} placeholder="password" />
-                                    <small className="form-text text-danger">
-                                        {this.state.confirmPassword.errorMessage}
-                                    </small>
+                                    <input required={true} type="password" className={this.handleFormError(this.state.confirmPassword)} onBlur={this.handleConfirmPasswordOnBlur} placeholder="password" />
+                                    {this.handleFormMessage(this.state.confirmPassword)}
                                 </div>
                             </div>
 
