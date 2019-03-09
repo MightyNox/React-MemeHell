@@ -8,19 +8,23 @@ import Register from '../Register/Register'
 import Login from '../Login/Login'
 import Logout from '../Logout/Logout'
 
+import { AlertProvider } from '../Alert/AlertContext'
+
 class App extends Component{
     render(){
         return(
-            <BrowserRouter>
-                <div className='container-fluid p-0'>
-                    <Menu></Menu>
-                    <Route exact path='/' component={Home} />
-                    <Route exact path='/counter' component={Counter} />
-                    <Route exact path='/register' component={Register} />
-                    <Route exact path='/login' component={Login} />
-                    <Route exact path='/logout' component={Logout} />
-                </div>
-            </BrowserRouter>
+            <AlertProvider>
+                <BrowserRouter>
+                    <div className='container-fluid p-0'>
+                        <Menu></Menu>
+                        <Route exact path='/' component={Home} />
+                        <Route exact path='/counter' component={Counter} />
+                        <Route exact path='/register' component={Register} />
+                        <Route exact path='/login' component={Login} />
+                        <Route exact path='/logout' component={Logout} />
+                    </div>
+                </BrowserRouter>
+            </AlertProvider>
         )
     }
 }

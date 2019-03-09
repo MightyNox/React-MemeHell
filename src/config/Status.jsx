@@ -14,7 +14,15 @@ const statusMessages = {
         "danger"
     ],
 
-    //81-150  Data status
+    //51-100  Data status
+    49 : [
+        "Acceptable", 
+        "success"
+    ],
+    50 : [
+        "Incorrect login!", 
+        "danger"
+    ],
     51 : [
         "This nickname is free!", 
         "success"
@@ -57,6 +65,10 @@ const statusMessages = {
     ],
     61 : [
         "First you have to set password!",
+        "danger"
+    ],
+    62 : [
+        "Incorrect password!",
         "danger"
     ]
 

@@ -6,13 +6,14 @@ import qs from 'qs'
 import statusMessages from '../../config/Status'
 import pattern from '../../config/Pattern'
 
+import Alert from '../Alert/Alert'
+import AlertContext from '../Alert/AlertContext'
+
 class Register extends Component {
     
     state = {
 
         redirect : false,
-
-        alert : null,
 
         nickname:{
             value : null,
@@ -56,9 +57,7 @@ class Register extends Component {
             !checkBox 
             ){
 
-            this.setState({
-                alert : 21
-            })
+            this.context.setAlert(21)
             return
         }
 
@@ -76,10 +75,7 @@ class Register extends Component {
             })
 
         }catch(err){
-            console.log(err.response.data.message)
-            this.setState({
-                alert : 0
-            })
+            this.context.setAlert(0)
         }
     }
 
@@ -281,32 +277,6 @@ class Register extends Component {
 
         return returnValue
     }
-
-
-    displayAlert(){
-        if(this.state.alert !== null){
-            const statusMessage = statusMessages[this.state.alert]
-            return(
-                <div className={"alert alert-"+ statusMessage[1] +" alert-dismissible"}>
-                    {statusMessage[0]}
-                    <button type="button" onClick={this.handleAlertOnClick} className="close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            )
-            
-        }else{
-            return
-        }
-
-        
-    }
-
-    handleAlertOnClick = ()=>{
-        this.setState({
-            alert : null
-        })
-    }
     
     render() {
         if(this.state.redirect){
@@ -325,8 +295,9 @@ class Register extends Component {
 
         return (
             <React.Fragment>
-                {this.displayAlert()}
-                <br/><br/><br/>
+                
+                <Alert/>
+
                 <div className="row container-fluid">
                     <div className="col-2"/>
 
@@ -420,10 +391,11 @@ class Register extends Component {
 
                     <div className="col-2"/>
                 </div>
-                
             </React.Fragment>
         )
     }
 }
+
+Register.contextType = AlertContext
 
 export default Register;

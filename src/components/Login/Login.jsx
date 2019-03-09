@@ -3,6 +3,8 @@ import {Redirect} from 'react-router-dom';
 import axios from 'axios'
 import qs from 'qs'
 
+import statusMessages from '../../config/Status'
+import pattern from '../../config/Pattern';
 class Login extends Component {
     
     state = {
@@ -13,17 +15,17 @@ class Login extends Component {
         alert:{
             display : false,
             props : false,
-            message : "",
+            message : null
         },
         login:{
-            value : "",
-            correct:null,
-            errorMessage:""
+            value : null,
+            correct : false,
+            message : null
         },
         password:{
-            value : "",
-            correct:null,
-            errorMessage:""
+            value : null,
+            correct : false,
+            message : null
         }
     }
 
@@ -37,7 +39,7 @@ class Login extends Component {
                 alert:{
                     display : true,
                     props : alert.props,
-                    message : "You have to fill all gaps correctly!"
+                    message : 21
                 }})
 
             return
@@ -59,7 +61,7 @@ class Login extends Component {
             this.setState({
                 alert:{
                     display : true,
-                    props : alert.props,
+                    props : false,
                     message : err.response.data.message
             }})
         }
@@ -68,20 +70,21 @@ class Login extends Component {
 
     handleLoginOnBlur = async (evt) =>{
         const login = evt.target.value
-        const nicknamePattern = /^[\w\d-]{3,}$/
-        const emailPattern = /^[\w-]+@[\w-]+(\.[a-zA-Z]{2,3}){1,2}$/
 
         if(login.length === 0){
             return
         }
 
-        if(!nicknamePattern.exec(login) && !emailPattern.exec(login))
+        if(
+            !pattern.nickname.exec(login) && 
+            !pattern.email.exec(login)
+            )
         {
             this.setState({
                 login : {
-                    value : "",
+                    value : null,
                     correct : false,
-                    errorMessage : "Wrong login!",
+                    message : 50,
             }})
 
             return
@@ -92,26 +95,25 @@ class Login extends Component {
             login : {
                 value : login,
                 correct : true,
-                errorMessage : "",
+                message : 49
         }})
     }
 
 
     handlePasswordOnBlur = async (evt) =>{
         const password = evt.target.value
-        const passwordPattern = /^.{8,}$/
 
         if(password.length === 0){
             return
         }
         
-        if(!passwordPattern.exec(password))
+        if(!pattern.password.exec(password))
         {
             this.setState({
                 password : {
-                    value : "",
+                    value : null,
                     correct : false,
-                    errorMessage : "Wrong password!",
+                    message : 62
             }})
 
             return
@@ -121,35 +123,42 @@ class Login extends Component {
             password : {
                 value : password,
                 correct : true,
-                errorMessage : "",
+                message : 57
         }})
     }
 
 
-    handleLoginError(){
-        const correct = this.state.login.correct
+    handleFormError(field){
+        let message = field.message
         let returnValue = "form-control"
 
-        if(correct === false){
-            returnValue += " is-invalid"
-        }
-        else if(correct === true){
-            returnValue += " is-valid"
+        if(message !== null){
+            message = statusMessages[message][1]
+            
+            if(message === "danger"){
+                returnValue += " is-invalid"
+            }
+            else if(message === "success"){
+                returnValue += " is-valid"
+            }
         }
 
         return returnValue
     }
+    
 
+    handleFormMessage(field){
+        let message = field.message
+        let returnValue = null
 
-    handlePasswordError(){
-        const correct = this.state.password.correct
-        let returnValue = "form-control"
+        if(message !== null){
+            const statusMessage = statusMessages[message]
 
-        if(correct === false){
-            returnValue += " is-invalid"
-        }
-        else if(correct === true){
-            returnValue += " is-valid"
+            returnValue = (
+                <small className={"form-text text-"+statusMessage[1]+""}>
+                    {statusMessage[0]}
+                </small>
+            )
         }
 
         return returnValue
@@ -231,10 +240,8 @@ class Login extends Component {
                                     </label>
                                 </div>
                                 <div className="form-group col-md-3">
-                                    <input required={true} type="text" className={this.handleLoginError()} onBlur={this.handleLoginOnBlur} placeholder="Mr. Example" />
-                                    <small className="form-text text-danger">
-                                        {this.state.login.errorMessage}
-                                    </small>
+                                    <input required={true} type="text" className={this.handleFormError(this.state.login)} onBlur={this.handleLoginOnBlur} placeholder="Mr. Example" />
+                                    {this.handleFormMessage(this.state.login)}
                                 </div>
                             </div>
 
@@ -247,10 +254,8 @@ class Login extends Component {
                                     </label>
                                 </div>
                                 <div className="form-group col-md-3">
-                                    <input required={true} type="password" className={this.handlePasswordError()} onBlur={this.handlePasswordOnBlur} placeholder="password" />
-                                    <small className="form-text text-danger">
-                                        {this.state.password.errorMessage}
-                                    </small>
+                                    <input required={true} type="password" className={this.handleFormError(this.state.password)} onBlur={this.handlePasswordOnBlur} placeholder="password" />
+                                    {this.handleFormMessage(this.state.password)}
                                 </div>
                             </div>
                             

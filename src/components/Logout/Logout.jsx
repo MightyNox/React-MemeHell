@@ -30,6 +30,10 @@ class Logout extends Component {
         })
     }
 
+    componentDidMount(){
+        this.handleLogout()
+    }
+
     render() {
 
         if(this.state.rediret){
@@ -46,11 +50,7 @@ class Logout extends Component {
            )
         }
         
-        return (
-            <React.Fragment>
-                {this.handleLogout()}
-            </React.Fragment>
-        )
+        return null
     }
 }
 
