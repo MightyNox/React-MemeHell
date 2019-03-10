@@ -20,15 +20,7 @@ class Menu extends Component {
                             </button>
                         </Link>
                     </div>
-                    <div className="navbar-nav">
-                        {/*  */}
-                        <Link to="/counter">
-                            <button className="btn-menu-text" type="button">
-                                Counter
-                            </button>
-                        </Link>
-                    </div>
-
+                    {/* Dynamic Links */}
                     {this.customizeNavBarMenu()}
 
                     <div className="dropdown">
@@ -40,10 +32,6 @@ class Menu extends Component {
                             <Link to="/">
                                 <i className="fas fa-home" />
                             </Link>
-                            {/*  */}
-                            <Link to="/counter">
-                                Counter
-                            </Link>
                             {/* Dynamic Links */}
                             {this.customizeDropDownMenu()}
                         </div>
@@ -54,21 +42,39 @@ class Menu extends Component {
     }
 
     customizeNavBarMenu(){
-        if(localStorage.getItem("user")){
+        if(localStorage.getItem("token")){
             return (
-                <div className="nav navbar-nav ml-auto">
-                    {/* Logout */}
-                    <Link to="/logout">
-                        <button className="btn-menu" type="button">
-                            <i className="fas fa-sign-out-alt" />
-                        </button>
-                    </Link>
-                </div>
+                <React.Fragment>
+                    <div className="navbar-nav">
+                        {/* Add Meme */}
+                        <Link to="/add-meme">
+                            <button className="btn-menu" type="button">
+                                <i className="fas fa-file-upload"/>
+                            </button>
+                        </Link>
+                    </div>
+                    <div className="navbar-nav">
+                        {/*  */}
+                        <Link to="/counter">
+                            <button className="btn-menu-text" type="button">
+                                Counter
+                            </button>
+                        </Link>
+                    </div>
+                    <div className="navbar-nav ml-auto">
+                        {/* Logout */}
+                        <Link to="/logout">
+                            <button className="btn-menu" type="button">
+                                <i className="fas fa-sign-out-alt" />
+                            </button>
+                        </Link>
+                    </div>
+                </React.Fragment>
             )
         }else{
             return(
                 <React.Fragment>
-                    <div className="nav navbar-nav ml-auto">
+                    <div className="navbar-nav ml-auto">
                         {/* Register */}
                         <Link to="/register">
                             <button className="btn-menu" type="button">
@@ -76,7 +82,7 @@ class Menu extends Component {
                             </button>
                         </Link>
                     </div>
-                    <div className="nav navbar-nav">
+                    <div className="navbar-nav">
                         {/* Login */}
                         <Link to="/login">
                             <button className="btn-menu" type="button">
@@ -90,9 +96,14 @@ class Menu extends Component {
     }
 
     customizeDropDownMenu(){
-        if(localStorage.getItem("user")){
+        if(localStorage.getItem("token")){
             return(
                 <div>
+                    {/* Add Meme */}
+                    <Link to="/add-meme">
+                        <i className="fas fa-file-upload"/>
+                    </Link>
+
                     {/* Logout */}
                     <Link to="/logout">
                         <i className="fas fa-sign-out-alt" />
@@ -106,6 +117,7 @@ class Menu extends Component {
                     <Link to="/register">
                         <i className="fas fa-user-plus" />
                     </Link>
+
                     {/* Login */}
                     <Link to="/login">
                         <i className="fas fa-sign-in-alt" />

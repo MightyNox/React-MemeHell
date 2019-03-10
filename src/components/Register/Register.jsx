@@ -281,6 +281,10 @@ class Register extends Component {
     }
     
     render() {
+        if(localStorage.getItem("token") !== null){
+            return <Redirect to="/"/>
+        }
+
         if(this.state.redirect){
             return (
                 <React.Fragment>

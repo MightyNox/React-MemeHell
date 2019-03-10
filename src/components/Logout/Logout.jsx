@@ -12,8 +12,8 @@ class Logout extends Component {
 
         let message
 
-        if(localStorage.getItem("user")){
-            localStorage.removeItem("user")
+        if(localStorage.getItem("token")){
+            localStorage.removeItem("token")
             message = 31
         }else{
             message = 32
