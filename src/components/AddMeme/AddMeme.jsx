@@ -19,7 +19,9 @@ class AddMeme extends Component {
             value : null,
             correct : false,
             message : null
-        }
+        },
+
+        tags : null
     }
 
     fileUpload = async() => {
@@ -89,6 +91,43 @@ class AddMeme extends Component {
         return returnValue
     }
 
+
+    displaySelect = () => {
+        if(!this.state.tags){
+            return <p>There are no tags!</p>
+        }else{
+            return(
+                <div>
+                    <select id="tag" multiple className="form-control" >
+                        {this.state.tags.map((tag) => 
+                            <option key={tag._id} value={tag._id}>{tag.name}</option>
+                        )} 
+                    </select>
+                </div>
+            )
+        }
+    }
+
+
+    getTags = async() => {
+
+        try{
+            const response = await axios.get('/tag/')
+            this.setState({tags : response.data.tags})
+
+        }catch(err){
+
+            const status = err.response.status
+
+            if(status === 500){
+                this.context.setAlert(0)
+            }else{
+                this.context.setAlert(0)
+            }
+        }
+    }
+
+
     handleNotLogged(){
         if(!localStorage.getItem("token")){
             const message = 32
@@ -104,6 +143,7 @@ class AddMeme extends Component {
 
     componentDidMount(){
         this.handleNotLogged()
+        this.getTags()
     }
     
     render() {
@@ -168,10 +208,7 @@ class AddMeme extends Component {
                             <div className="row justify-content-center">
                                 <div className="col-4"/>
                                 <div className="col-4">
-                                    <select id="tag" multiple class="form-control" >
-                                        <option value="Sweet">Sweet</option>
-                                        <option value="Sour">Sour</option>
-                                    </select>
+                                    {this.displaySelect()}
                                 </div>
                                 <div className="col-4"/>
                             </div>
@@ -180,8 +217,11 @@ class AddMeme extends Component {
 
                             {/* File */}
                             <div className="row justify-content-center">
-                                <input type="file" id="file" class="inputfile" onChange={this.fileSelect} />
-                                <label for="file" class="btn btn-dark">Choose Your Meme 😈</label>
+                                <input type="file" id="file" className="inputfile" onChange={this.fileSelect} />
+                                <label className="btn btn-dark">
+                                    Choose Your Meme 
+                                    <span role="img" aria-label="devil"> 😈</span>
+                                </label>
                             </div>
                             
                             <br/>
