@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import {Redirect} from 'react-router-dom';
+import React, { Component } from 'react'
+import {Redirect} from 'react-router-dom'
 import axios from 'axios'
 import qs from 'qs'
 
 import statusMessages from '../../config/Status'
-import pattern from '../../config/Pattern';
+import pattern from '../../config/Pattern'
 import Alert from '../Alert/Alert'
 import AlertContext from '../Alert/AlertContext'
 class Login extends Component {
@@ -43,9 +43,9 @@ class Login extends Component {
         }
 
         try{
-            const token = await axios.post('/auth/login', qs.stringify(body))
-            
-            localStorage.setItem("token", token)
+            const response = await axios.post('/auth/login', qs.stringify(body))
+
+            localStorage.setItem("token", response.data.token)
 
             this.setState({redirect : true})
 

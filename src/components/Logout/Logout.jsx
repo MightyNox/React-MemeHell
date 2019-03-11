@@ -5,7 +5,7 @@ import AlertContext from '../Alert/AlertContext'
 class Logout extends Component {
 
     state = {
-        rediret : false,
+        redirect : false,
     }
 
     handleLogout(){
@@ -20,7 +20,7 @@ class Logout extends Component {
         }
 
         this.setState({
-            rediret : true,
+            redirect : true,
         })
 
         this.context.setAlert(message)
@@ -32,7 +32,7 @@ class Logout extends Component {
 
     render() {
 
-        if(this.state.rediret){
+        if(this.state.redirect){
             return (
                 <React.Fragment>
                    <Redirect to={{
