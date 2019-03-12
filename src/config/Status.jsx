@@ -86,6 +86,14 @@ const statusMessages = {
     62 : [
         "Incorrect password!",
         "danger"
+    ],
+    63 : [
+        "Acceptable title!",
+        "danger"
+    ],
+    64 : [
+        "Incorrect title! Min. 6 signs",
+        "danger"
     ]
 
 } 

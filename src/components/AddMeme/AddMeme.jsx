@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {Redirect} from 'react-router-dom';
 import axios from 'axios'
 
+import pattern from '../../config/Pattern'
 import statusMessages from '../../config/Status'
 import Alert from '../Alert/Alert'
 import AlertContext from '../Alert/AlertContext'
@@ -26,13 +27,33 @@ class AddMeme extends Component {
 
     fileUpload = async() => {
 
+        const title = this.state.title
+        const file = this.state.file
+        const elements = document.getElementById("tagSelect")
+        let tags = []
+        Array.from(elements).forEach(function (element) {
+            if(element.selected){
+                tags.push(element.value)
+            }
+        })
+
+        if(
+            tags.length === 0 || 
+            !title.correct || 
+            !file
+            ){
+            this.context.setAlert(21)
+            return
+        }
+
         const data = new FormData()
         data.append("token", localStorage.getItem("token"))
-        data.append("title", "XD")
-        data.append("tags", [])
-        data.append("file", this.state.file)
+        data.append("title", title.value)
+        data.append("tags", tags)
+        data.append("file", file)
 
         try{
+
             await axios.post('/meme/add', data)
 
         }catch(err){
@@ -52,6 +73,42 @@ class AddMeme extends Component {
         this.setState({ 
             file : event.target.files[0] 
         })
+    }
+
+
+    handleTitleOnBlur = async (evt) =>{
+        const title = evt.target.value
+
+        if(title.length === 0){
+            this.setState({
+                title : {
+                    value : null,
+                    correct : false,
+                    message : null
+            }})
+
+            return
+        }
+
+        if(!pattern.title.exec(title))
+        {
+            this.setState({
+                title : {
+                    value : null,
+                    correct : false,
+                    message : 64,
+            }})
+
+            return
+
+        }
+
+        this.setState({
+            title : {
+                value : title,
+                correct : true,
+                message : 49
+        }})
     }
 
     
@@ -98,9 +155,9 @@ class AddMeme extends Component {
         }else{
             return(
                 <div>
-                    <select id="tag" multiple className="form-control" >
+                    <select id="tagSelect" multiple className="form-control">
                         {this.state.tags.map((tag) => 
-                            <option key={tag._id} value={tag._id}>{tag.name}</option>
+                            <option key={tag.name} value={tag.name}>{tag.name}</option>
                         )} 
                     </select>
                 </div>
@@ -195,13 +252,14 @@ class AddMeme extends Component {
                                     </label>
                                 </div>
                                 <div className="form-group col-md-3">
-                                    <input required={true} type="text" className={this.handleFormError(this.state.title)} onBlur={this.handleLoginOnBlur} placeholder="Lana drahrepus" />
+                                    <input required={true} type="text" className={this.handleFormError(this.state.title)} onBlur={this.handleTitleOnBlur} placeholder="Lana drahrepus" />
                                     {this.handleFormMessage(this.state.title)}
                                 </div>
                             </div>
 
                             {/* Tags */}
                             <div className="row justify-content-center">
+                                <span className="text-danger font-weight-bold">*</span>
                                 <label>Select corresponding tags</label>
                             </div>
 
@@ -217,8 +275,8 @@ class AddMeme extends Component {
 
                             {/* File */}
                             <div className="row justify-content-center">
+                            <label className="btn btn-dark">
                                 <input type="file" id="file" className="inputfile" onChange={this.fileSelect} />
-                                <label className="btn btn-dark">
                                     Choose Your Meme 
                                     <span role="img" aria-label="devil"> 😈</span>
                                 </label>
