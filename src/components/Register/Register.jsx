@@ -34,6 +34,7 @@ class Register extends Component {
         },
 
         confirmPassword : {
+            value : null,
             correct : false,
             message : null
         },
@@ -77,7 +78,15 @@ class Register extends Component {
             this.context.setAlert(33)
 
         }catch(err){
-            this.context.setAlert(0)
+            
+            const status = err.response.status
+            if(status === 400){
+                this.context.setAlert(21)
+            }else if(status === 500){
+                this.context.setAlert(0)
+            }else{
+                this.context.setAlert(0)
+            }
         }
     }
 
@@ -86,6 +95,13 @@ class Register extends Component {
         const nickname = evt.target.value
 
         if(nickname.length === 0){
+            this.setState({
+                nickname : {
+                    value : null,
+                    correct : false,
+                    message : null
+            }})
+            
             return
         }
 
@@ -126,6 +142,13 @@ class Register extends Component {
         const email = evt.target.value
 
         if(email.length === 0){
+            this.setState({
+                email : {
+                    value : null,
+                    correct : false,
+                    message : null
+            }})
+
             return
         }
 
@@ -164,19 +187,30 @@ class Register extends Component {
 
     handlePasswordOnBlur = async (evt) =>{
         const password = evt.target.value
-
-        this.setState({
-            confirmPassword : {
-                correct : false,
-                message : null
-        }})
+        const confirmPassword = this.state.confirmPassword.value
 
         if(password.length === 0){
+            this.setState({
+                password : {
+                    value : null,
+                    correct : false,
+                    message : null
+            }})
+
             return
         }
 
+
         if(!pattern.password.exec(password))
         {
+            if(confirmPassword){
+                this.setState({
+                    confirmPassword : {
+                        correct : false,
+                        message : 60
+                }})
+            }
+
             this.setState({
                 password : {
                     value : null,
@@ -197,12 +231,24 @@ class Register extends Component {
 
 
     handleConfirmPasswordOnBlur = async (evt) =>{
-        const password = this.state.password.value
         const confirmPassword = evt.target.value
+        const password = this.state.password.value
 
-        if(password === null){
+        if(confirmPassword.length === 0){
             this.setState({
                 confirmPassword : {
+                    value : null,
+                    correct : false,
+                    message : null
+            }})
+
+            return
+        }
+
+        if(!password){
+            this.setState({
+                confirmPassword : {
+                    value : null,
                     correct : false,
                     message : 61
             }})
@@ -210,14 +256,11 @@ class Register extends Component {
             return
         }
 
-        if(confirmPassword.length === 0){
-            return
-        }
-
-        if(password.length === 0 || password !== confirmPassword)
+        if(password !== confirmPassword)
         {
             this.setState({
                 confirmPassword : {
+                    value : null,
                     correct : false,
                     message : 60
             }})
@@ -227,6 +270,7 @@ class Register extends Component {
 
         this.setState({
             confirmPassword : {
+                value : confirmPassword,
                 correct : true,
                 message : 59
         }})

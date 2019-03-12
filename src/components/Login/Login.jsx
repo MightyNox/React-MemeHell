@@ -67,6 +67,13 @@ class Login extends Component {
         const login = evt.target.value
 
         if(login.length === 0){
+            this.setState({
+                login : {
+                    value : null,
+                    correct : false,
+                    message : null
+            }})
+
             return
         }
 
@@ -99,6 +106,13 @@ class Login extends Component {
         const password = evt.target.value
 
         if(password.length === 0){
+            this.setState({
+                password : {
+                    value : null,
+                    correct : false,
+                    message : null
+            }})
+
             return
         }
         
