@@ -40,7 +40,6 @@ class Alert extends Component {
         return(
             <div>
                 {this.displayAlert()}
-                <br/><br/><br/>
             </div>
             
         )

@@ -1,10 +1,16 @@
 import React, { Component } from 'react'
 
+import Alert from '../Alert/Alert'
+
 class Home extends Component {
 
     render() {
         return (
             <div>
+                <Alert/>
+
+                <br/>
+
                 <h1>Home</h1>
             </div>
         )

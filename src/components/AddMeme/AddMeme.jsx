@@ -11,6 +11,8 @@ import './AddMeme.css'
 class AddMeme extends Component {
 
     state = {
+        buttonEnabled : true,
+
         file : null,
 
         homeRedirect : false,
@@ -26,7 +28,6 @@ class AddMeme extends Component {
     }
 
     fileUpload = async() => {
-
         const title = this.state.title
         const file = this.state.file
         const elements = document.getElementById("tagSelect")
@@ -52,11 +53,19 @@ class AddMeme extends Component {
         data.append("tags", tags)
         data.append("file", file)
 
+        this.setState({buttonEnabled : false})
+        
         try{
 
             await axios.post('/meme/add', data)
 
+            this.setState({
+                homeRedirect : true
+            })
+            this.context.setAlert(65)
+
         }catch(err){
+            this.setState({buttonEnabled : true})
 
             const status = err.response.status
             if(status === 400){
@@ -68,6 +77,39 @@ class AddMeme extends Component {
             }
         }
     }
+
+
+    displayUploadButton(){
+        if(this.state.buttonEnabled)
+        {
+            return(
+                <button onClick={this.fileUpload} type="button" className="btn btn-dark">Upload</button>
+            )
+
+        }else{
+            return(
+                <button onClick={this.fileUpload} type="button" className="btn btn-dark" disabled>Upload</button>
+            )
+        }
+        
+    }
+
+
+    displayFileName(){
+        if(this.state.file)
+        {
+            return(
+                <div>
+                    File name: {this.state.file.name}
+                </div>
+            )
+
+        }else{
+
+        }
+        
+    }
+
 
     fileSelect = (event) => {
         this.setState({ 
@@ -230,6 +272,10 @@ class AddMeme extends Component {
                 
                 <Alert/>
 
+                <br/>
+                <br/>
+                <br/>
+
                 <div className="row container-fluid">
                     <div className="col-2"/>
 
@@ -264,29 +310,31 @@ class AddMeme extends Component {
                             </div>
 
                             <div className="row justify-content-center">
-                                <div className="col-4"/>
-                                <div className="col-4">
+                                <div className="col-3 col-sm-4 col-lg-5"/>
+                                <div className="col-6 col-sm-4 col-lg-2">
                                     {this.displaySelect()}
                                 </div>
-                                <div className="col-4"/>
+                                <div className="col-3 col-sm-4 col-lg-5"/>
                             </div>
 
                             <br/>
 
                             {/* File */}
                             <div className="row justify-content-center">
-                            <label className="btn btn-dark">
+                                <label className="btn btn-dark">
                                 <input type="file" id="file" className="inputfile" onChange={this.fileSelect} />
                                     Choose Your Meme 
                                     <span role="img" aria-label="devil"> 😈</span>
                                 </label>
+                                {this.displayFileName()}
                             </div>
+                            
                             
                             <br/>
 
                             {/* Submit button */}
                             <div className="row justify-content-center">
-                                <button onClick={this.fileUpload} type="button" className="btn btn-dark">Upload</button>
+                                {this.displayUploadButton()}
                             </div>
                         </form>
                     </div>

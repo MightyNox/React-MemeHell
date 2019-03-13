@@ -4,7 +4,7 @@ const statusMessages = {
 
     //0 - 20 General
     0 : [
-        "Oops! Something went wrong!", 
+        "Oops! Something went wrong! 👿", 
         "danger"
     ],
 
@@ -26,7 +26,7 @@ const statusMessages = {
         "danger"
     ],
     33 : [
-        "User successfully created! Now you can sign in :)", 
+        "User successfully created! Now you can sign in 😈", 
         "success"
     ],
 
@@ -94,6 +94,10 @@ const statusMessages = {
     64 : [
         "Incorrect title! Min. 6 signs",
         "danger"
+    ],
+    65 : [
+        "Meme added successfully! 😈",
+        "success"
     ]
 
 } 

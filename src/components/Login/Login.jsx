@@ -188,6 +188,10 @@ class Login extends Component {
                 
                 <Alert/>
 
+                <br/>
+                <br/>
+                <br/>
+
                 <div className="row container-fluid">
                     <div className="col-2"/>
 
