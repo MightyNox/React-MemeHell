@@ -54,10 +54,10 @@ class Menu extends Component {
                         </Link>
                     </div>
                     <div className="navbar-nav">
-                        {/*  */}
-                        <Link to="/counter">
+                        {/* Memes */}
+                        <Link to="/memes">
                             <button className="btn-menu-text" type="button">
-                                Counter
+                                <i class="fas fa-biohazard"/>
                             </button>
                         </Link>
                     </div>
@@ -102,6 +102,11 @@ class Menu extends Component {
                     {/* Add Meme */}
                     <Link to="/add-meme">
                         <i className="fas fa-file-upload"/>
+                    </Link>
+                    
+                    {/* Memes */}
+                    <Link to="/memes">
+                        <i class="fas fa-biohazard"/>
                     </Link>
 
                     {/* Logout */}

@@ -29,6 +29,10 @@ const statusMessages = {
         "User successfully created! Now you can sign in 😈", 
         "success"
     ],
+    34 : [
+        "You are signed in! Have fun 👻",
+        "success"
+    ],
 
     //51-100  Data status
     49 : [
@@ -95,7 +99,9 @@ const statusMessages = {
         "Incorrect title! Min. 6 signs",
         "danger"
     ],
-    65 : [
+
+    //101-150
+    101 : [
         "Meme added successfully! 😈",
         "success"
     ]

@@ -19,7 +19,7 @@ class Home extends Component {
                     <p class="mb-0">
                         Meme hell is the most awesome source  <br/>
                         of gaining knowledge and sharing experiences <br/> with another people using memes! 
-                        <span role="img"> 🤩</span>
+                        <span role="img" aria-label="*-*"> 🤩</span>
                     </p>
                     <footer class="blockquote-footer">Adam Mickiewicz</footer>
 
@@ -27,7 +27,7 @@ class Home extends Component {
 
                     <p class="mb-0">
                         It is the first time i can agree with the gentleman who wrote above. 
-                        <span role="img"> 😜</span>
+                        <span role="img" aria-label=":P"> 😜</span>
                     </p>
                     <footer class="blockquote-footer">Juliusz Słowacki</footer>
 
@@ -35,7 +35,7 @@ class Home extends Component {
 
                     <p class="mb-0">
                         Penguins and other specimens visit this site during the mating season. 
-                        <span role="img"> 🐧</span>
+                        <span role="img" aria-label="penguin"> 🐧</span>
                     </p>
                     <footer class="blockquote-footer">Krystyna Czubówna read</footer>
 
@@ -43,7 +43,7 @@ class Home extends Component {
 
                     <p class="mb-0">
                         Even Caesar loves Meme Hell. 
-                        <span role="img"> 🔪</span>
+                        <span role="img" aria-label="dagger"> 🔪</span>
                     </p>
                     <footer class="blockquote-footer">Brutus</footer>
                 </blockquote>

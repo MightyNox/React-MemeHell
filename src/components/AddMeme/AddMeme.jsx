@@ -62,7 +62,7 @@ class AddMeme extends Component {
             this.setState({
                 homeRedirect : true
             })
-            this.context.setAlert(65)
+            this.context.setAlert(101)
 
         }catch(err){
             this.setState({buttonEnabled : true})

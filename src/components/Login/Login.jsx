@@ -48,6 +48,7 @@ class Login extends Component {
             localStorage.setItem("token", response.data.token)
 
             this.setState({redirect : true})
+            this.context.setAlert(34)
 
         }catch(err){
 
