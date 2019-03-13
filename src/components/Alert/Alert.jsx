@@ -29,6 +29,12 @@ class Alert extends Component {
     handleAlertOnClick = ()=>{
         this.context.setAlert(null)
     }
+
+    componentWillUnmount(){
+        if(this.context.state.alert){
+            this.context.setAlert(null)
+        }
+    }
     
     render() {
         return(
