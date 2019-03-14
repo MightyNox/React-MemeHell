@@ -1,6 +1,7 @@
 const statusMessages = {
     //Error - danger
     //Success - success
+    //Info - info
 
     //0 - 20 General
     0 : [
@@ -34,7 +35,7 @@ const statusMessages = {
         "success"
     ],
 
-    //51-100  Data status
+    //51-100  Forms status
     49 : [
         "Acceptable", 
         "success"
@@ -100,10 +101,14 @@ const statusMessages = {
         "danger"
     ],
 
-    //101-150
+    //101-150 Other
     101 : [
         "Meme added successfully! 😈",
         "success"
+    ],
+    102 : [
+        "There are no more memes! 👿",
+        "info"
     ]
 
 } 

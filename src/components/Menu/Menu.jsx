@@ -57,7 +57,7 @@ class Menu extends Component {
                         {/* Memes */}
                         <Link to="/memes">
                             <button className="btn-menu-text" type="button">
-                                <i class="fas fa-biohazard"/>
+                                <i className="fas fa-biohazard"/>
                             </button>
                         </Link>
                     </div>
@@ -106,7 +106,7 @@ class Menu extends Component {
                     
                     {/* Memes */}
                     <Link to="/memes">
-                        <i class="fas fa-biohazard"/>
+                        <i className="fas fa-biohazard"/>
                     </Link>
 
                     {/* Logout */}

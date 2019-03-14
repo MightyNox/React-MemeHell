@@ -322,10 +322,14 @@ class AddMeme extends Component {
                             {/* File */}
                             <div className="row justify-content-center">
                                 <label className="btn btn-dark">
-                                <input type="file" id="file" className="inputfile" onChange={this.fileSelect} />
+                                    <input type="file" id="file" className="inputfile" onChange={this.fileSelect} />
                                     Choose Your Meme 
                                     <span role="img" aria-label="devil"> 😈</span>
                                 </label>
+                            </div>
+
+                            {/* File name */}
+                            <div className="row justify-content-center">
                                 {this.displayFileName()}
                             </div>
                             
