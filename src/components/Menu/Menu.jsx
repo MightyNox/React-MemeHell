@@ -1,42 +1,49 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom'
+
+import Alert from "../Alert/Alert"
 import './Menu.css'
 
 class Menu extends Component {
     render() {
         return (
             <React.Fragment>
-                <nav className="navbar navbar-expand-lg bg-dark">
-                    <div className="navbar-brand">
-                        <img src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" alt="logo" />
-                    </div>
-                
-                
-                    <div className="navbar-nav">
-                        {/* Home */}
-                        <Link to="/">
-                            <button className="btn-menu" type="button">
-                                <i className="fas fa-home" />
-                            </button>
-                        </Link>
-                    </div>
-                    {/* Dynamic Links */}
-                    {this.customizeNavBarMenu()}
-
-                    <div className="dropdown">
-                        <button className="btn-menu">
-                            <i className="fas fa-bars" />
-                        </button>
-                        <div className="dropdown-content">
+                <div className="fixed-top">
+                    <nav className="navbar bg-dark">
+                        <div className="navbar-brand">
+                            <img src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" alt="logo" />
+                        </div>
+                    
+                    
+                        <div className="navbar-nav">
                             {/* Home */}
                             <Link to="/">
-                                <i className="fas fa-home" />
+                                <button className="btn-menu" type="button">
+                                    <i className="fas fa-home" />
+                                </button>
                             </Link>
-                            {/* Dynamic Links */}
-                            {this.customizeDropDownMenu()}
                         </div>
-                    </div>
-                </nav>
+                        {/* Dynamic Links */}
+                        {this.customizeNavBarMenu()}
+
+                        <div className="dropdown">
+                            <button className="btn-menu">
+                                <i className="fas fa-bars" />
+                            </button>
+                            <div className="dropdown-content">
+                                {/* Home */}
+                                <Link to="/">
+                                    <i className="fas fa-home" />
+                                </Link>
+                                {/* Dynamic Links */}
+                                {this.customizeDropDownMenu()}
+                            </div>
+                        </div>
+                    </nav>
+
+                <Alert />
+
+                </div>
             </React.Fragment>
         )
     }

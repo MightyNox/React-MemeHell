@@ -4,7 +4,6 @@ import axios from 'axios'
 
 import pattern from '../../config/Pattern'
 import statusMessages from '../../config/Status'
-import Alert from '../Alert/Alert'
 import AlertContext from '../Alert/AlertContext'
 import './AddMeme.css'
 
@@ -269,13 +268,6 @@ class AddMeme extends Component {
 
         return (
             <React.Fragment>
-                
-                <Alert/>
-
-                <br/>
-                <br/>
-                <br/>
-
                 <div className="row container-fluid">
                     <div className="col-2"/>
 

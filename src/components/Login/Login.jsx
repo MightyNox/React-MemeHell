@@ -5,7 +5,6 @@ import qs from 'qs'
 
 import statusMessages from '../../config/Status'
 import pattern from '../../config/Pattern'
-import Alert from '../Alert/Alert'
 import AlertContext from '../Alert/AlertContext'
 class Login extends Component {
     
@@ -186,13 +185,6 @@ class Login extends Component {
 
         return (
             <React.Fragment>
-                
-                <Alert/>
-
-                <br/>
-                <br/>
-                <br/>
-
                 <div className="row container-fluid">
                     <div className="col-2"/>
 

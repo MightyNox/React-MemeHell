@@ -1,16 +1,10 @@
 import React, { Component } from 'react'
 
-import Alert from '../Alert/Alert'
-
 class Home extends Component {
 
     render() {
         return (
             <div>
-                <Alert/>
-
-                <br/>
-
                 <blockquote className="blockquote text-center">
                     <h1>Featured</h1>
 
