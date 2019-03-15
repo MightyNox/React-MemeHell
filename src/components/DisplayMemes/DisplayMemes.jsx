@@ -107,7 +107,7 @@ class DisplayMemes extends Component {
             )
         }
     }
-    
+
 
     displayMemes = ()=>{
 
@@ -143,6 +143,26 @@ class DisplayMemes extends Component {
                                 </div>
                                     
                                 <img className="card-img-top p-1" src={memeLink} alt={memeAlt}/>
+
+                                <div className="card-footer">
+                                    <div className="row">
+                                        <div className="col text-left">
+                                            <small>
+                                                Author: {meme.author}
+                                            </small>
+                                        </div>
+                                        <div className="col text-center">
+                                            <small>
+                                                Date: {this.convertDate(meme.date)}
+                                            </small>
+                                        </div>
+                                        <div className="col text-right">
+                                            <small>
+                                                {meme.rating}  <span role="img" aria-label="streak"> 🔥</span>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         )
                     })}
@@ -150,6 +170,24 @@ class DisplayMemes extends Component {
             )
         }
         
+    }
+
+
+    convertDate = (date) => {
+        const dateToConvert = new Date(date)
+        let day = dateToConvert.getDate();
+        let month = dateToConvert.getMonth();
+        let year = dateToConvert.getFullYear();
+
+        if(day.toString().length === 1){
+            day = "0"+day
+        }
+
+        if(month.toString().length === 1){
+            month = "0"+month
+        }
+
+        return (day+'-'+month+'-'+year)
     }
 
 
