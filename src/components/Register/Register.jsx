@@ -285,42 +285,6 @@ class Register extends Component {
         }
     }
 
-
-    handleFormError(field){
-        let message = field.message
-        let returnValue = "form-control"
-
-        if(message !== null){
-            message = statusMessages[message][1]
-            
-            if(message === "danger"){
-                returnValue += " is-invalid"
-            }
-            else if(message === "success"){
-                returnValue += " is-valid"
-            }
-        }
-
-        return returnValue
-    }
-    
-
-    handleFormMessage(field){
-        let message = field.message
-        let returnValue = null
-
-        if(message !== null){
-            const statusMessage = statusMessages[message]
-
-            returnValue = (
-                <small className={"form-text text-"+statusMessage[1]+""}>
-                    {statusMessage[0]}
-                </small>
-            )
-        }
-
-        return returnValue
-    }
     
     render() {
         if(localStorage.getItem("token") !== null){
@@ -435,6 +399,44 @@ class Register extends Component {
             </React.Fragment>
         )
     }
+
+
+    handleFormError(field){
+        let message = field.message
+        let returnValue = "form-control"
+
+        if(message !== null){
+            message = statusMessages[message][1]
+            
+            if(message === "danger"){
+                returnValue += " is-invalid"
+            }
+            else if(message === "success"){
+                returnValue += " is-valid"
+            }
+        }
+
+        return returnValue
+    }
+    
+
+    handleFormMessage(field){
+        let message = field.message
+        let returnValue = null
+
+        if(message !== null){
+            const statusMessage = statusMessages[message]
+
+            returnValue = (
+                <small className={"form-text text-"+statusMessage[1]+""}>
+                    {statusMessage[0]}
+                </small>
+            )
+        }
+
+        return returnValue
+    }
+    
 
     componentWillUnmount(){
         if(this.context.state.alert !== null){

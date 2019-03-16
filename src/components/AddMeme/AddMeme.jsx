@@ -78,38 +78,6 @@ class AddMeme extends Component {
     }
 
 
-    displayUploadButton(){
-        if(this.state.buttonEnabled)
-        {
-            return(
-                <button onClick={this.fileUpload} type="button" className="btn btn-dark">Upload</button>
-            )
-
-        }else{
-            return(
-                <button onClick={this.fileUpload} type="button" className="btn btn-dark" disabled>Upload</button>
-            )
-        }
-        
-    }
-
-
-    displayFileName(){
-        if(this.state.file)
-        {
-            return(
-                <div>
-                    File name: {this.state.file.name}
-                </div>
-            )
-
-        }else{
-
-        }
-        
-    }
-
-
     fileSelect = (event) => {
         this.setState({ 
             file : event.target.files[0] 
@@ -152,97 +120,6 @@ class AddMeme extends Component {
         }})
     }
 
-    
-    handleFormError(field){
-        let message = field.message
-        let returnValue = "form-control"
-
-        if(message !== null){
-            message = statusMessages[message][1]
-            
-            if(message === "danger"){
-                returnValue += " is-invalid"
-            }
-            else if(message === "success"){
-                returnValue += " is-valid"
-            }
-        }
-
-        return returnValue
-    }
-    
-
-    handleFormMessage(field){
-        let message = field.message
-        let returnValue = null
-
-        if(message !== null){
-            const statusMessage = statusMessages[message]
-
-            returnValue = (
-                <small className={"form-text text-"+statusMessage[1]+""}>
-                    {statusMessage[0]}
-                </small>
-            )
-        }
-
-        return returnValue
-    }
-
-
-    displaySelect = () => {
-        if(!this.state.tags){
-            return <p>There are no tags!</p>
-        }else{
-            return(
-                <div>
-                    <select id="tagSelect" multiple className="form-control">
-                        {this.state.tags.map((tag) => 
-                            <option key={tag.name} value={tag.name}>{tag.name}</option>
-                        )} 
-                    </select>
-                </div>
-            )
-        }
-    }
-
-
-    getTags = async() => {
-
-        try{
-            const response = await axios.get('/tag/')
-            this.setState({tags : response.data.tags})
-
-        }catch(err){
-
-            const status = err.response.status
-
-            if(status === 500){
-                this.context.setAlert(0)
-            }else{
-                this.context.setAlert(0)
-            }
-        }
-    }
-
-
-    handleNotLogged(){
-        if(!localStorage.getItem("token")){
-            const message = 32
-
-            this.setState({
-                loginRedirect : true,
-            })
-
-            this.context.setAlert(message)
-        }
-    }
-
-
-    componentDidMount(){
-        this.handleNotLogged()
-        this.getTags()
-    }
     
     render() {
 
@@ -342,10 +219,135 @@ class AddMeme extends Component {
         )
     }
 
+
+    displayUploadButton(){
+        if(this.state.buttonEnabled)
+        {
+            return(
+                <button onClick={this.fileUpload} type="button" className="btn btn-dark">Upload</button>
+            )
+
+        }else{
+            return(
+                <button onClick={this.fileUpload} type="button" className="btn btn-dark" disabled>Upload</button>
+            )
+        }
+        
+    }
+
+
+    displayFileName(){
+        if(this.state.file)
+        {
+            return(
+                <div>
+                    File name: {this.state.file.name}
+                </div>
+            )
+
+        }else{
+
+        }
+        
+    }
+
+    
+    displaySelect = () => {
+        if(!this.state.tags){
+            return <p>There are no tags!</p>
+        }else{
+            return(
+                <div>
+                    <select id="tagSelect" multiple className="form-control">
+                        {this.state.tags.map((tag) => 
+                            <option key={tag.name} value={tag.name}>{tag.name}</option>
+                        )} 
+                    </select>
+                </div>
+            )
+        }
+    }
+
+
+    getTags = async() => {
+
+        try{
+            const response = await axios.get('/tag/')
+            this.setState({tags : response.data.tags})
+
+        }catch(err){
+
+            const status = err.response.status
+
+            if(status === 500){
+                this.context.setAlert(0)
+            }else{
+                this.context.setAlert(0)
+            }
+        }
+    }
+
+
+    handleNotLogged(){
+        if(!localStorage.getItem("token")){
+            const message = 32
+
+            this.setState({
+                loginRedirect : true,
+            })
+
+            this.context.setAlert(message)
+        }
+    }
+
+
+    handleFormError(field){
+        let message = field.message
+        let returnValue = "form-control"
+
+        if(message !== null){
+            message = statusMessages[message][1]
+            
+            if(message === "danger"){
+                returnValue += " is-invalid"
+            }
+            else if(message === "success"){
+                returnValue += " is-valid"
+            }
+        }
+
+        return returnValue
+    }
+    
+
+    handleFormMessage(field){
+        let message = field.message
+        let returnValue = null
+
+        if(message !== null){
+            const statusMessage = statusMessages[message]
+
+            returnValue = (
+                <small className={"form-text text-"+statusMessage[1]+""}>
+                    {statusMessage[0]}
+                </small>
+            )
+        }
+
+        return returnValue
+    }
+
+
     componentWillUnmount(){
         if(this.context.state.alert !== null){
             this.context.setAlert(null)
         }
+    }
+
+
+    componentDidMount(){
+        this.handleNotLogged()
+        this.getTags()
     }
 }
 
