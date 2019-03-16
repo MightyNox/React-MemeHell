@@ -25,7 +25,7 @@ class Menu extends Component {
                         </div>
                         <div className="navbar-nav">
                             {/* Memes */}
-                            <Link to="/memes/0">
+                            <Link to="/memes">
                                 <button className="btn-menu-text" type="button">
                                     <i className="fas fa-biohazard"/>
                                 </button>
@@ -46,7 +46,7 @@ class Menu extends Component {
                                 </Link>
 
                                 {/* Memes */}
-                                <Link to="/memes/0">
+                                <Link to="/memes">
                                     <i className="fas fa-biohazard"/>
                                 </Link>
 

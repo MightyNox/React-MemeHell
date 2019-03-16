@@ -17,12 +17,15 @@ class DisplayMemes extends Component {
 
     handleNextOnClick = async () =>{
 
-        const page = this.state.page
+        const page = parseInt(this.state.page) + 1
 
-        await this.setState({page : page + 1})
+        await this.setState({page : page})
 
         if(await this.getMemes()){
+            this.props.history.push("/memes/" + page)
             this.goTop() 
+        }else{
+            await this.setState({page : (page-1)})
         }
     }
 
@@ -33,7 +36,8 @@ class DisplayMemes extends Component {
 
         if(page > 0){
             await this.setState({page : page - 1})
-            this.getMemes()
+            await this.getMemes()
+            this.props.history.push("/memes/" + (page - 1))
             this.goTop()
         }
     }
@@ -200,10 +204,8 @@ class DisplayMemes extends Component {
 
             const status = err.response.status
             if(status === 400){
-                if(this.state.page > 0){
-                    await this.setState({page : this.state.page - 1})
-                }
-                
+                await this.setState({page : this.state.page - 1})
+                this.getMemes()
                 this.context.setAlert(102)
             }
             else if(status === 500){
