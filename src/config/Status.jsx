@@ -109,6 +109,14 @@ const statusMessages = {
     102 : [
         "There are no more memes! 👿",
         "info"
+    ],
+    103 : [
+        "Meme not found! 👿",
+        "danger"
+    ],
+    104 : [
+        "You have rated this meme!",
+        "danger"
     ]
 
 } 

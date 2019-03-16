@@ -7,7 +7,8 @@ import Register from '../Register/Register'
 import Login from '../Login/Login'
 import Logout from '../Logout/Logout'
 import AddMeme from '../AddMeme/AddMeme'
-import DisplayMemes from '../DisplayMemes/DisplayMemes';
+import DisplayMemes from '../DisplayMemes/DisplayMemes'
+import DisplaySingleMeme from '../DisplaySingleMeme/DisplaySingleMeme'
 
 import { AlertProvider } from '../Alert/AlertContext'
 
@@ -24,6 +25,7 @@ class App extends Component{
                         <Route exact path='/logout' component={Logout} />
                         <Route exact path='/add-meme' component={AddMeme} />
                         <Route exact path='/memes' component={DisplayMemes} />
+                        <Route exact path='/meme/:id' component={DisplaySingleMeme} />
                     </div>
                 </BrowserRouter>
             </AlertProvider>

@@ -435,6 +435,12 @@ class Register extends Component {
             </React.Fragment>
         )
     }
+
+    componentWillUnmount(){
+        if(this.context.state.alert !== null){
+            this.context.setAlert(null)
+        }
+    }
 }
 
 Register.contextType = AlertContext

@@ -341,6 +341,12 @@ class AddMeme extends Component {
             </React.Fragment>
         )
     }
+
+    componentWillUnmount(){
+        if(this.context.state.alert !== null){
+            this.context.setAlert(null)
+        }
+    }
 }
 
 AddMeme.contextType = AlertContext

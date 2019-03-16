@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+import AlertContext from '../Alert/AlertContext'
+
 class Home extends Component {
 
     render() {
@@ -44,6 +46,14 @@ class Home extends Component {
             </div>
         )
     }
+
+    componentWillUnmount(){
+        if(this.context.state.alert !== null){
+            this.context.setAlert(null)
+        }
+    }
 }
+
+Home.contextType = AlertContext
 
 export default Home

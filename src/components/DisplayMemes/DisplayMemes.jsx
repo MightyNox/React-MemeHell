@@ -73,7 +73,7 @@ class DisplayMemes extends Component {
                             </button>
                         </div>
 
-                        {this.displayPrevious()}
+                        {this.displayPreviousButton()}
                         
                         <br/>
                         <br/>
@@ -93,7 +93,7 @@ class DisplayMemes extends Component {
     }
 
 
-    displayPrevious = ()=>{
+    displayPreviousButton = ()=>{
         if(this.state.page === 0){
             return null
         }else{
@@ -119,13 +119,13 @@ class DisplayMemes extends Component {
 
                     {this.state.memes.map((meme)=>{
 
-                        const memeLink = "http://localhost:5000/meme/" + meme._id + "." + meme.type
+                        const memeLink = "/meme/" + meme._id 
                         const memeAlt = "Meme: " + meme._id
 
                         return (
                             <div key={meme._id}  className="card border-secondary text-white bg-dark m-4" >
                                 <div className="card-header">
-                                    <a className="text-white card-title h5" href={memeLink} alt={memeAlt} target="_blank" rel="noopener noreferrer">
+                                    <a className="text-white card-title h5" href={memeLink} alt={memeAlt} rel="noopener noreferrer">
                                         {meme.title}
                                     </a>
                                 </div>
@@ -142,7 +142,7 @@ class DisplayMemes extends Component {
                                     </small>
                                 </div>
                                     
-                                <img className="card-img-top p-1" src={memeLink} alt={memeAlt}/>
+                                <img className="card-img-top p-1" src={memeLink + "." + meme.type} alt={memeAlt}/>
 
                                 <div className="card-footer">
                                     <div className="row">
@@ -158,7 +158,7 @@ class DisplayMemes extends Component {
                                         </div>
                                         <div className="col text-right">
                                             <small>
-                                                {meme.rating}  <span role="img" aria-label="streak"> 🔥</span>
+                                                {meme.rating.value}  <span role="img" aria-label="streak"> 🔥</span>
                                             </small>
                                         </div>
                                     </div>
@@ -214,7 +214,10 @@ class DisplayMemes extends Component {
 
             const status = err.response.status
             if(status === 400){
-                await this.setState({page : this.state.page - 1})
+                if(this.state.page > 0){
+                    await this.setState({page : this.state.page - 1})
+                }
+                
                 this.context.setAlert(102)
             }
             else if(status === 500){
@@ -236,6 +239,13 @@ class DisplayMemes extends Component {
             })
 
             this.context.setAlert(32)
+        }
+    }
+
+    
+    componentWillUnmount(){
+        if(this.context.state.alert !== null){
+            this.context.setAlert(null)
         }
     }
 

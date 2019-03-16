@@ -241,6 +241,12 @@ class Login extends Component {
             </React.Fragment>
         )
     }
+
+    componentWillUnmount(){
+        if(this.context.state.alert !== null){
+            this.context.setAlert(null)
+        }
+    }
 }
 
 Login.contextType = AlertContext
