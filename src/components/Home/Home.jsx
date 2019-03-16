@@ -7,7 +7,24 @@ class Home extends Component {
     render() {
         return (
             <div>
+                <div className="col">
+                    <div className="row h1 justify-content-center">
+                        Welcome To The Meme Hell! 
+                        <span role="img" aria-label="devil"> 😈</span>
+                    </div>
+                    <div className="row  justify-content-center">
+                    <video width="60%" height="50%" controls>
+                        <source src="/featured/review.mp4" type="video/mp4"/>
+                        Your browser does not support the videos!
+                    </video>
+                    </div>
+                </div>
+
+                <br/>
+                <br/>
+                
                 <blockquote className="blockquote text-center">
+            
                     <h1>Featured</h1>
 
                     <br/>
@@ -43,6 +60,10 @@ class Home extends Component {
                     </p>
                     <footer className="blockquote-footer">Brutus</footer>
                 </blockquote>
+
+                <br/>
+                <br/>
+                <br/>
             </div>
         )
     }
