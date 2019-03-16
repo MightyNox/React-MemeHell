@@ -182,7 +182,6 @@ class DisplayMemes extends Component {
 
 
     getMemes = async() => {
-
         const params={
             params : {
                 page : this.state.page,
@@ -204,8 +203,15 @@ class DisplayMemes extends Component {
 
             const status = err.response.status
             if(status === 400){
-                await this.setState({page : this.state.page - 1})
-                this.getMemes()
+                const response = await axios.get('/meme/count')
+                const lastPage = Math.ceil(response.data.count/10)-1
+
+                if(lastPage !== -1){
+                    await this.setState({page : lastPage})
+                    this.props.history.push("/memes/" + (lastPage))
+                    await this.getMemes()
+                }
+                
                 this.context.setAlert(102)
             }
             else if(status === 500){
