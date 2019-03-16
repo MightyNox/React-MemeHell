@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import {Redirect} from 'react-router-dom';
 import axios from 'axios'
 
 import AlertContext from '../Alert/AlertContext'
@@ -8,8 +7,6 @@ import "./DisplayMemes.css"
 class DisplayMemes extends Component {
 
     state = {
-
-        loginRedirect : false,
 
         memes : null,
 
@@ -43,17 +40,6 @@ class DisplayMemes extends Component {
 
     
     render() {
-
-        if(this.state.loginRedirect){
-            return (
-                <React.Fragment>
-                   <Redirect to={{
-                       pathname: "/login"
-                    }}/>
-               </React.Fragment>
-            )
-        }
-
         return (
             <div>
                 <div className="row container-fluid">
@@ -204,7 +190,7 @@ class DisplayMemes extends Component {
 
             const response = await axios.get('/meme/', params)
 
-            this.setState({
+            await this.setState({
                 memes : response.data.memes
             })   
             
@@ -231,28 +217,28 @@ class DisplayMemes extends Component {
     }
 
 
-    handleNotLogged(){
-        if(!localStorage.getItem("token")){
+    getPage = async() => {
 
-            this.setState({
-                loginRedirect : true,
-            })
+        const page = this.props.match.params.page
 
-            this.context.setAlert(32)
+        if(isNaN(page)){
+            await this.setState({page : 0})
+        }else{
+            await this.setState({page : this.props.match.params.page})
         }
     }
 
     
-    componentWillUnmount(){
+    componentWillUnmount = async() => {
         if(this.context.state.alert !== null){
-            this.context.setAlert(null)
+            await this.context.setAlert(null)
         }
     }
 
 
-    componentDidMount(){
-        this.handleNotLogged()
-        this.getMemes()
+    componentDidMount = async() => {
+        await this.getPage()
+        await this.getMemes()
     }
 }
 

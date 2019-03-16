@@ -17,14 +17,14 @@ class App extends Component{
         return(
             <AlertProvider>
                 <BrowserRouter>
-                    <div className='container-fluid p-0'>
+                    <div className='container-fluid'>
                         <Menu></Menu>
                         <Route exact path='/' component={Home} />
                         <Route exact path='/register' component={Register} />
                         <Route exact path='/login' component={Login} />
                         <Route exact path='/logout' component={Logout} />
                         <Route exact path='/add-meme' component={AddMeme} />
-                        <Route exact path='/memes' component={DisplayMemes} />
+                        <Route exact path='/memes/:page' component={DisplayMemes} />
                         <Route exact path='/meme/:id' component={DisplaySingleMeme} />
                     </div>
                 </BrowserRouter>

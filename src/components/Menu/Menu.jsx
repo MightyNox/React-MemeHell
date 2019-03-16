@@ -23,6 +23,15 @@ class Menu extends Component {
                                 </button>
                             </Link>
                         </div>
+                        <div className="navbar-nav">
+                            {/* Memes */}
+                            <Link to="/memes/0">
+                                <button className="btn-menu-text" type="button">
+                                    <i className="fas fa-biohazard"/>
+                                </button>
+                            </Link>
+                        </div>
+                        
                         {/* Dynamic Links */}
                         {this.customizeNavBarMenu()}
 
@@ -35,6 +44,12 @@ class Menu extends Component {
                                 <Link to="/">
                                     <i className="fas fa-home" />
                                 </Link>
+
+                                {/* Memes */}
+                                <Link to="/memes/0">
+                                    <i className="fas fa-biohazard"/>
+                                </Link>
+
                                 {/* Dynamic Links */}
                                 {this.customizeDropDownMenu()}
                             </div>
@@ -57,14 +72,6 @@ class Menu extends Component {
                         <Link to="/add-meme">
                             <button className="btn-menu" type="button">
                                 <i className="fas fa-file-upload"/>
-                            </button>
-                        </Link>
-                    </div>
-                    <div className="navbar-nav">
-                        {/* Memes */}
-                        <Link to="/memes">
-                            <button className="btn-menu-text" type="button">
-                                <i className="fas fa-biohazard"/>
                             </button>
                         </Link>
                     </div>
@@ -109,11 +116,6 @@ class Menu extends Component {
                     {/* Add Meme */}
                     <Link to="/add-meme">
                         <i className="fas fa-file-upload"/>
-                    </Link>
-                    
-                    {/* Memes */}
-                    <Link to="/memes">
-                        <i className="fas fa-biohazard"/>
                     </Link>
 
                     {/* Logout */}

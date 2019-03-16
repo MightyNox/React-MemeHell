@@ -78,8 +78,6 @@ class DisplaySingleMeme extends Component {
                 comments : response.data.comments
             })   
 
-            console.log(response.data.comments)
-
             this.context.setAlert(106)
 
             this.refs.commentTextArea.value = "Hello I'm Mr. Puffin, share your opinion with me!"
@@ -236,24 +234,30 @@ class DisplaySingleMeme extends Component {
 
 
     displayComments = ()=>{
-        if(this.state.comments === null){
+        const comments = this.state.comments
+        if(comments === null || comments.length === 0){
             return null
         }else{
             return (
-                <div className="card border-secondary text-white bg-dark">
+                <div className="card border-secondary text-white bg-dark mt-2">
                     {this.state.comments.map((comment)=>{
                         return (
-                            <div className="card-body row form-group">
-                            <div className="col-xs-4 col-md-3 col-xl-2">
-                                {comment.author}
-                            </div>
-                            <div className="col-xs-8 col-md-9 col-xl-10">
-                                {comment.content}
-                            </div> 
+                            <div className="card-body row form-group p-2">
+                                <div className="col-xs-4 col-md-3 col-xl-2 bg-secondary">
+                                    {comment.author}
+                                </div>
+                                <div className="col-xs-7 col-md-6 col-xl-8">
+                                    {comment.content}
+                                </div> 
+                                <div className="col-xs-1 col-md-3 col-xl-2">
+                                    <small>
+                                        {this.convertDate(comment.date)}
+                                    </small>
+                                </div> 
                             </div>      
                         )
                     })}
-            </div>
+                </div>
             )
         }
         
@@ -342,10 +346,10 @@ class DisplaySingleMeme extends Component {
     }
 
 
-    handleNotLogged(){
+    async handleNotLogged(){
         if(!localStorage.getItem("token")){
 
-            this.setState({
+            await this.setState({
                 loginRedirect : true,
             })
 
@@ -361,10 +365,13 @@ class DisplaySingleMeme extends Component {
     }
 
 
-    componentDidMount(){
-        this.handleNotLogged()
-        this.getMeme()
-        this.getComments()
+    async componentDidMount(){
+        await this.handleNotLogged()
+
+        if(!this.state.loginRedirect){
+            await this.getMeme()
+            await this.getComments()
+        }
     }
 }
 
