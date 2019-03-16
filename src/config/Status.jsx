@@ -100,6 +100,10 @@ const statusMessages = {
         "Incorrect title! Min. 6 signs",
         "danger"
     ],
+    65 : [
+        "Comment is too short!",
+        "danger"
+    ],
 
     //101-150 Other
     101 : [
@@ -117,6 +121,14 @@ const statusMessages = {
     104 : [
         "You have rated this meme!",
         "danger"
+    ],
+    105 : [
+        "This comment is incorrect!",
+        "danger"
+    ],
+    106 : [
+        "Comment added successfully!",
+        "success"
     ]
 
 } 
