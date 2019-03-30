@@ -5,7 +5,7 @@ import qs from 'qs'
 
 import statusMessages from '../../config/Status'
 import pattern from '../../config/Pattern'
-import Context from '../../services/Context'
+import Context from '../Context/Context'
 import './Register.css'
 
 class Register extends Component {

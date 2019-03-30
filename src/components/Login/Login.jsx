@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import {Redirect} from 'react-router-dom'
-import axios from 'axios'
 import qs from 'qs'
 
-import statusMessages from '../../config/Status'
 import pattern from '../../config/Pattern'
-import Context from '../../services/Context'
+import Context from '../Context/Context'
+import postData from '../../services/postData'
+import formMessage from '../../services/formMessage'
+import formError from '../../services/formError'
 class Login extends Component {
     
     state = {
@@ -16,12 +17,18 @@ class Login extends Component {
         login:{
             value : null,
             correct : false,
-            message : null
+            alert : {
+                message : null,
+                type : null
+            }
         },
         password:{
             value : null,
             correct : false,
-            message : null
+            alert : {
+                message : null,
+                type : null
+            }
         }
     }
 
@@ -44,36 +51,19 @@ class Login extends Component {
             password : password.value,
         }
 
-        try{
-            const response = await axios.post('/auth/login', qs.stringify(body))
+        const response = await postData('/auth/login', qs.stringify(body))
 
-            localStorage.setItem("token", response.data.token)
-
-            this.setState({redirect : true})
+        if (response.error) {
+            this.context.setAlert(response.error.message, response.error.type)
+        }else{
+            await localStorage.setItem("token", response.data.token)
+            await this.context.setSignedIn(true)
+            await this.setState({redirect : true})
+    
             this.context.setAlert(
                 "You are signed in! Have fun 👻",
                 "success"
             )
-
-        }catch(err){
-
-            const status = err.response.status
-            if(status === 400){
-                this.context.setAlert(
-                    "Incorrect login or password!", 
-                    "danger"
-                )
-            }else if(status === 500){
-                this.context.setAlert(
-                    "Oops! Something went wrong! 👿", 
-                    "danger"
-                )
-            }else{
-                this.context.setAlert(
-                    "Oops! Something went wrong! 👿", 
-                    "danger"
-                )
-            }
         }
     }
 
@@ -86,7 +76,10 @@ class Login extends Component {
                 login : {
                     value : null,
                     correct : false,
-                    message : null
+                    alert : {
+                        message : null,
+                        type : null
+                    }
             }})
 
             return
@@ -101,8 +94,12 @@ class Login extends Component {
                 login : {
                     value : null,
                     correct : false,
-                    message : 50,
-            }})
+                    alert : {
+                        message : "Incorrect login!",
+                        type : "danger"
+                    }
+                }
+            })
 
             return
 
@@ -112,7 +109,10 @@ class Login extends Component {
             login : {
                 value : login,
                 correct : true,
-                message : 49
+                alert : {
+                    message : "Acceptable",
+                    type : "success"
+                }
         }})
     }
 
@@ -125,7 +125,10 @@ class Login extends Component {
                 password : {
                     value : null,
                     correct : false,
-                    message : null
+                    alert : {
+                        message : null,
+                        type : null
+                    }
             }})
 
             return
@@ -137,7 +140,10 @@ class Login extends Component {
                 password : {
                     value : null,
                     correct : false,
-                    message : 62
+                    alert : {
+                        message : "Incorrect password!",
+                        type : "danger"
+                    }
             }})
 
             return
@@ -147,16 +153,15 @@ class Login extends Component {
             password : {
                 value : password,
                 correct : true,
-                message : 57
+                alert : {
+                    message : "Acceptable",
+                    type : "success"
+                }
         }})
     }
 
 
     render() {
-        if(localStorage.getItem("token") !== null){
-            return <Redirect to="/"/>
-        }
-
         if(this.state.redirect){
             return <Redirect to="/"/>
         }
@@ -185,8 +190,8 @@ class Login extends Component {
                                     </label>
                                 </div>
                                 <div className="form-group col-md-3">
-                                    <input required={true} type="text" className={this.handleFormError(this.state.login)} onBlur={this.handleLoginOnBlur} placeholder="Mr. Example" />
-                                    {this.handleFormMessage(this.state.login)}
+                                    <input required={true} type="text" className={formError(this.state.login)} onBlur={this.handleLoginOnBlur} placeholder="Mr. Example" />
+                                    {formMessage(this.state.login.alert)}
                                 </div>
                             </div>
 
@@ -199,8 +204,8 @@ class Login extends Component {
                                     </label>
                                 </div>
                                 <div className="form-group col-md-3">
-                                    <input required={true} type="password" className={this.handleFormError(this.state.password)} onBlur={this.handlePasswordOnBlur} placeholder="password" />
-                                    {this.handleFormMessage(this.state.password)}
+                                    <input required={true} type="password" className={formError(this.state.password)} onBlur={this.handlePasswordOnBlur} placeholder="password" />
+                                    {formMessage(this.state.password.alert)}
                                 </div>
                             </div>
                             
@@ -219,48 +224,14 @@ class Login extends Component {
             </React.Fragment>
         )
     }
-
-
-    handleFormError(field){
-        let message = field.message
-        let returnValue = "form-control"
-
-        if(message !== null){
-            message = statusMessages[message][1]
-            
-            if(message === "danger"){
-                returnValue += " is-invalid"
-            }
-            else if(message === "success"){
-                returnValue += " is-valid"
-            }
-        }
-
-        return returnValue
-    }
-    
-
-    handleFormMessage(field){
-        let message = field.message
-        let returnValue = null
-
-        if(message !== null){
-            const statusMessage = statusMessages[message]
-
-            returnValue = (
-                <small className={"form-text text-"+statusMessage[1]+""}>
-                    {statusMessage[0]}
-                </small>
-            )
-        }
-
-        return returnValue
-    }
-
     
     componentWillUnmount(){
-        if(this.context.state.alert !== null){
-            this.context.setAlert(null, null)
+        this.context.setAlert(null, null)
+    }
+
+    componentDidMount(){
+        if(this.context.state.signedIn){
+            this.setState({redirect : true})
         }
     }
 }

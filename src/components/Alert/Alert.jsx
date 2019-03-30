@@ -1,8 +1,20 @@
 import React, { Component } from 'react'
 
-import Context from '../../services/Context'
+import Context from '../Context/Context'
 
 class Alert extends Component {
+
+    handleAlertOnClick = ()=>{
+        this.context.setAlert(null, null)
+    }
+    
+    render() {
+        return(
+            <div>
+                {this.displayAlert()}
+            </div>
+        )
+    }
 
     displayAlert(){
         
@@ -21,19 +33,6 @@ class Alert extends Component {
         }else{
             return
         }
-    }
-
-    handleAlertOnClick = ()=>{
-        this.context.setAlert(null, null)
-    }
-    
-    render() {
-        return(
-            <div>
-                {this.displayAlert()}
-            </div>
-            
-        )
     }
 }
 

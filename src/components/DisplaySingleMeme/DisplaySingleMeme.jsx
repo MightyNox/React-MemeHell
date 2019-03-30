@@ -4,7 +4,7 @@ import axios from 'axios'
 import qs from 'qs'
 
 import pattern from '../../config/Pattern'
-import Context from '../../services/Context'
+import Context from '../Context/Context'
 import './DisplaySingleMeme.css'
 
 class DisplaySingleMeme extends Component {

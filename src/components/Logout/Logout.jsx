@@ -1,33 +1,35 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 
-import Context from '../../services/Context'
+import Context from '../Context/Context'
 class Logout extends Component {
 
     state = {
         redirect : false,
     }
 
-    handleLogout(){
+    handleLogout = async() => {
 
-        let message
+        let message = "You are not signed in!"
+        let type = "danger"
 
-        if(localStorage.getItem("token")){
-            localStorage.removeItem("token")
-            message = 31
-        }else{
-            message = 32
+        if(this.context.state.signedIn) {
+            await localStorage.removeItem("token")
+            await this.context.setSignedIn(false)
+
+            message = "You are signed out!"
+            type = "success"
         }
-
-        this.setState({
+        
+        await this.setState({
             redirect : true,
         })
 
-        this.context.setAlert(message, "danger")
+        this.context.setAlert(message, type)
     }
 
-    componentDidMount(){
-        this.handleLogout()
+    componentDidMount = async() => {
+        await this.handleLogout()
     }
 
     render() {

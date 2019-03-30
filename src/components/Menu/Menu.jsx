@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Link} from 'react-router-dom'
 
 import Alert from "../Alert/Alert"
+import Context from '../Context/Context'
 import './Menu.css'
 
 class Menu extends Component {
@@ -64,7 +65,7 @@ class Menu extends Component {
     }
 
     customizeNavBarMenu(){
-        if(localStorage.getItem("token")){
+        if(this.context.state.signedIn){
             return (
                 <React.Fragment>
                     <div className="navbar-nav">
@@ -118,7 +119,7 @@ class Menu extends Component {
     }
 
     customizeDropDownMenu(){
-        if(localStorage.getItem("token")){
+        if(this.context.state.signedIn){
             return(
                 <div>
                     {/* Memes Tag */}
@@ -154,6 +155,8 @@ class Menu extends Component {
         }
     }
 }
+
+Menu.contextType = Context
 
 export default Menu
 

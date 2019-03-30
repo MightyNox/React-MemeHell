@@ -4,7 +4,7 @@ import axios from 'axios'
 
 import pattern from '../../config/Pattern'
 import statusMessages from '../../config/Status'
-import Context from '../../services/Context'
+import Context from '../Context/Context'
 import './AddMeme.css'
 
 class AddMeme extends Component {
@@ -15,7 +15,6 @@ class AddMeme extends Component {
         file : null,
 
         homeRedirect : false,
-        loginRedirect : false,
 
         title:{
             value : null,
@@ -137,17 +136,6 @@ class AddMeme extends Component {
 
     
     render() {
-
-        if(this.state.loginRedirect){
-            return (
-                <React.Fragment>
-                   <Redirect to={{
-                       pathname: "/login"
-                    }}/>
-               </React.Fragment>
-            )
-        }
-
         if(this.state.homeRedirect){
             return (
                 <React.Fragment>
@@ -309,21 +297,6 @@ class AddMeme extends Component {
     }
 
 
-    handleNotLogged(){
-        if(!localStorage.getItem("token")){
-
-            this.setState({
-                loginRedirect : true,
-            })
-
-            this.context.setAlert(
-                "You are not signed in!", 
-                "danger"
-            )
-        }
-    }
-
-
     handleFormError(field){
         let message = field.message
         let returnValue = "form-control"
@@ -362,14 +335,11 @@ class AddMeme extends Component {
 
 
     componentWillUnmount(){
-        if(this.context.state.alert !== null){
-            this.context.setAlert(null, null)
-        }
+        this.context.setAlert(null, null)
     }
 
 
     componentDidMount(){
-        this.handleNotLogged()
         this.getTags()
     }
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 
-import Context from '../../services/Context'
+import Context from '../Context/Context'
 import "./DisplayMemesByTags.css"
 
 class DisplayMemesByTags extends Component {

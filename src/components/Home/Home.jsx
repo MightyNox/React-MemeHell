@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import Context from '../../services/Context'
+import Context from '../Context/Context'
 import './Home.css'
 
 class Home extends Component {
