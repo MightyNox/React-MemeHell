@@ -4,7 +4,7 @@ import axios from 'axios'
 
 import pattern from '../../config/Pattern'
 import statusMessages from '../../config/Status'
-import AlertContext from '../Alert/AlertContext'
+import Context from '../../services/Context'
 import './AddMeme.css'
 
 class AddMeme extends Component {
@@ -351,6 +351,6 @@ class AddMeme extends Component {
     }
 }
 
-AddMeme.contextType = AlertContext
+AddMeme.contextType = Context
 
 export default AddMeme

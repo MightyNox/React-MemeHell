@@ -5,7 +5,7 @@ import qs from 'qs'
 
 import statusMessages from '../../config/Status'
 import pattern from '../../config/Pattern'
-import AlertContext from '../Alert/AlertContext'
+import Context from '../../services/Context'
 import './Register.css'
 
 class Register extends Component {
@@ -446,6 +446,6 @@ class Register extends Component {
     }
 }
 
-Register.contextType = AlertContext
+Register.contextType = Context
 
 export default Register;

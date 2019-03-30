@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 
-import AlertContext from '../Alert/AlertContext'
+import Context from '../../services/Context'
 import "./DisplayMemes.css"
 
 class DisplayMemes extends Component {
@@ -250,6 +250,6 @@ class DisplayMemes extends Component {
     }
 }
 
-DisplayMemes.contextType = AlertContext
+DisplayMemes.contextType = Context
 
 export default DisplayMemes

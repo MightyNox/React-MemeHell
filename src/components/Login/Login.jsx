@@ -5,7 +5,7 @@ import qs from 'qs'
 
 import statusMessages from '../../config/Status'
 import pattern from '../../config/Pattern'
-import AlertContext from '../Alert/AlertContext'
+import Context from '../../services/Context'
 class Login extends Component {
     
     state = {
@@ -250,6 +250,6 @@ class Login extends Component {
     }
 }
 
-Login.contextType = AlertContext
+Login.contextType = Context
 
 export default Login;

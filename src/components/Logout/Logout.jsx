@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 
-import AlertContext from '../Alert/AlertContext'
+import Context from '../../services/Context'
 class Logout extends Component {
 
     state = {
@@ -46,6 +46,6 @@ class Logout extends Component {
     }
 }
 
-Logout.contextType = AlertContext
+Logout.contextType = Context
 
 export default Logout;

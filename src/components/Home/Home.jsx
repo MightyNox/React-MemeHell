@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import AlertContext from '../Alert/AlertContext'
+import Context from '../../services/Context'
 import './Home.css'
 
 class Home extends Component {
@@ -76,6 +76,6 @@ class Home extends Component {
     }
 }
 
-Home.contextType = AlertContext
+Home.contextType = Context
 
 export default Home

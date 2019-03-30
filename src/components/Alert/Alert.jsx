@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import statusMessages from '../../config/Status'
 
-import AlertContext from './AlertContext'
+import Context from '../../services/Context'
 
 class Alert extends Component {
 
@@ -40,6 +40,6 @@ class Alert extends Component {
     }
 }
 
-Alert.contextType = AlertContext
+Alert.contextType = Context
 
 export default Alert

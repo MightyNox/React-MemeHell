@@ -4,7 +4,7 @@ import axios from 'axios'
 import qs from 'qs'
 
 import pattern from '../../config/Pattern'
-import AlertContext from '../Alert/AlertContext'
+import Context from '../../services/Context'
 import './DisplaySingleMeme.css'
 
 class DisplaySingleMeme extends Component {
@@ -375,6 +375,6 @@ class DisplaySingleMeme extends Component {
     }
 }
 
-DisplaySingleMeme.contextType = AlertContext
+DisplaySingleMeme.contextType = Context
 
 export default DisplaySingleMeme

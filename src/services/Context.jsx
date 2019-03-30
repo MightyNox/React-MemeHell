@@ -1,6 +1,6 @@
 import React from 'react'
 
-const AlertContext = React.createContext()
+const Context = React.createContext()
 
 export class AlertProvider extends React.Component {
     state = {
@@ -9,15 +9,15 @@ export class AlertProvider extends React.Component {
 
     render() {
         return (
-            <AlertContext.Provider value = {{
+            <Context.Provider value = {{
                 state : this.state,
                 setAlert : (value) => this.setState(
                     {alert : value}
                 )}}>
                 {this.props.children}
-            </AlertContext.Provider>
+            </Context.Provider>
         )
     }
 }
 
-export default AlertContext
+export default Context

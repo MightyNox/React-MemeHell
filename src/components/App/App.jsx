@@ -12,7 +12,7 @@ import DisplayMemesByTags from '../DisplayMemesByTags/DisplayMemesByTags'
 import DisplaySingleMeme from '../DisplaySingleMeme/DisplaySingleMeme'
 import NotFound from '../NotFound/NotFound'
 
-import { AlertProvider } from '../Alert/AlertContext'
+import { AlertProvider } from '../../services/Context'
 
 class App extends Component{
     render(){
