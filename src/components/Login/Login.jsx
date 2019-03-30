@@ -148,7 +148,7 @@ class Login extends Component {
 
         return (
             <React.Fragment>
-                <div className="row container-fluid">
+                <div className="space row container-fluid">
                     <div className="col-2"/>
 
                     <div className="col-8">

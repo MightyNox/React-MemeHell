@@ -68,6 +68,14 @@ class Menu extends Component {
             return (
                 <React.Fragment>
                     <div className="navbar-nav">
+                        {/* Memes Tag */}
+                        <Link to="/memes/category">
+                            <button className="btn-menu" type="button">
+                                <i className="fas fa-hashtag"/>
+                            </button>
+                        </Link>
+                    </div>
+                    <div className="navbar-nav">
                         {/* Add Meme */}
                         <Link to="/add-meme">
                             <button className="btn-menu" type="button">
@@ -113,6 +121,11 @@ class Menu extends Component {
         if(localStorage.getItem("token")){
             return(
                 <div>
+                    {/* Memes Tag */}
+                    <Link to="/memes/category">
+                        <i className="fas fa-hashtag"/>
+                    </Link>
+                    
                     {/* Add Meme */}
                     <Link to="/add-meme">
                         <i className="fas fa-file-upload"/>

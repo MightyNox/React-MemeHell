@@ -6,6 +6,7 @@ import qs from 'qs'
 import statusMessages from '../../config/Status'
 import pattern from '../../config/Pattern'
 import AlertContext from '../Alert/AlertContext'
+import './Register.css'
 
 class Register extends Component {
     
@@ -303,7 +304,7 @@ class Register extends Component {
 
         return (
             <React.Fragment>
-                <div className="row container-fluid">
+                <div className="space row container-fluid">
                     <div className="col-2"/>
 
                     <div className="col-8">

@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import axios from 'axios'
 
 import AlertContext from '../Alert/AlertContext'
-import "./DisplayMemes.css"
+import "./DisplayMemesByTags.css"
 
-class DisplayMemes extends Component {
+class DisplayMemesByTags extends Component {
 
     state = {
 
@@ -45,7 +45,7 @@ class DisplayMemes extends Component {
     
     render() {
         return (
-            <div className="space">
+            <div>
                 <div className="row container-fluid">
                     <div className="col-2"/>
                     <div className="col-8">
@@ -250,6 +250,6 @@ class DisplayMemes extends Component {
     }
 }
 
-DisplayMemes.contextType = AlertContext
+DisplayMemesByTags.contextType = AlertContext
 
-export default DisplayMemes
+export default DisplayMemesByTags

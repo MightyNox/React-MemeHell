@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 
 import AlertContext from '../Alert/AlertContext'
+import './Home.css'
 
 class Home extends Component {
 
     render() {
         return (
-            <div>
+            <div className="space">
                 <div className="col">
                     <div className="row h1 justify-content-center">
                         Welcome To The Meme Hell! 
