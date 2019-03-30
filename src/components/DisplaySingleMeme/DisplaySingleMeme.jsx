@@ -42,12 +42,21 @@ class DisplaySingleMeme extends Component {
             const status = err.response.status
 
             if(status === 400){
-                this.context.setAlert(104)
+                this.context.setAlert(
+                    "You have rated this meme!",
+                    "danger"
+                )
             }
             else if(status === 500){
-                this.context.setAlert(0)
+                this.context.setAlert(
+                    "Oops! Something went wrong! 👿", 
+                    "danger"
+                )
             }else{
-                this.context.setAlert(0)
+                this.context.setAlert(
+                    "Oops! Something went wrong! 👿", 
+                    "danger"
+                )
             }
         }
     }
@@ -59,7 +68,10 @@ class DisplaySingleMeme extends Component {
 
         if(!pattern.comment.exec(content))
         {
-            this.context.setAlert(65)
+            this.context.setAlert(
+                "Comment is too short!",
+                "danger"
+            )
             return
         }
 
@@ -78,7 +90,10 @@ class DisplaySingleMeme extends Component {
                 comments : response.data.comments
             })   
 
-            this.context.setAlert(106)
+            this.context.setAlert(
+                "Comment added successfully!",
+                "success"
+            )
 
             this.refs.commentTextArea.value = "Hello I'm Mr. Puffin, share your opinion with me!"
 
@@ -87,12 +102,21 @@ class DisplaySingleMeme extends Component {
             const status = err.response.status
 
             if(status === 400){
-                this.context.setAlert(105)
+                this.context.setAlert(
+                    "This comment is incorrect!",
+                    "danger"
+                )
             }
             else if(status === 500){
-                this.context.setAlert(0)
+                this.context.setAlert(
+                    "Oops! Something went wrong! 👿", 
+                    "danger"
+                )
             }else{
-                this.context.setAlert(0)
+                this.context.setAlert(
+                    "Oops! Something went wrong! 👿", 
+                    "danger"
+                )
             }
         }
     }
@@ -301,9 +325,15 @@ class DisplaySingleMeme extends Component {
             const status = err.response.status
 
             if(status === 500){
-                this.context.setAlert(0)
+                this.context.setAlert(
+                    "Oops! Something went wrong! 👿", 
+                    "danger"
+                )
             }else{
-                this.context.setAlert(0)
+                this.context.setAlert(
+                    "Oops! Something went wrong! 👿", 
+                    "danger"
+                )
             }
 
             await this.setState({homeRedirect : true})
@@ -333,12 +363,21 @@ class DisplaySingleMeme extends Component {
 
             if(status === 400){
                 await this.setState({page : this.state.page - 1})
-                this.context.setAlert(103)
+                this.context.setAlert(
+                    "Meme not found! 👿",
+                    "danger"
+                )
             }
             else if(status === 500){
-                this.context.setAlert(0)
+                this.context.setAlert(
+                    "Oops! Something went wrong! 👿", 
+                    "danger"
+                )
             }else{
-                this.context.setAlert(0)
+                this.context.setAlert(
+                    "Oops! Something went wrong! 👿", 
+                    "danger"
+                )
             }
 
             await this.setState({homeRedirect : true})
@@ -353,14 +392,17 @@ class DisplaySingleMeme extends Component {
                 loginRedirect : true,
             })
 
-            this.context.setAlert(32)
+            this.context.setAlert(
+                "You are not signed in!", 
+                "danger"
+            )
         }
     }
 
 
     componentWillUnmount(){
         if(this.context.state.alert !== null){
-            this.context.setAlert(null)
+            this.context.setAlert(null, null)
         }
     }
 

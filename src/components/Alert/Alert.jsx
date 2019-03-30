@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 
-import statusMessages from '../../config/Status'
-
 import Context from '../../services/Context'
 
 class Alert extends Component {
@@ -10,11 +8,10 @@ class Alert extends Component {
         
         const alert = this.context.state.alert
 
-        if(alert !== null){
-            const statusMessage = statusMessages[alert]
+        if(alert.message !== null){
             return(
-                <div className={"alert alert-"+ statusMessage[1] +" alert-dismissible"}>
-                    {statusMessage[0]}
+                <div className={"alert alert-"+ alert.type +" alert-dismissible"}>
+                    {alert.message}
                     <button type="button" onClick={this.handleAlertOnClick} className="close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -27,7 +24,7 @@ class Alert extends Component {
     }
 
     handleAlertOnClick = ()=>{
-        this.context.setAlert(null)
+        this.context.setAlert(null, null)
     }
     
     render() {

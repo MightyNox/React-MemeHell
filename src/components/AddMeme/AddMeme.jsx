@@ -42,7 +42,10 @@ class AddMeme extends Component {
             !title.correct || 
             !file
             ){
-            this.context.setAlert(21)
+            this.context.setAlert(
+                "You have to fill all gaps correctly!", 
+                "danger"
+            )
             return
         }
 
@@ -61,18 +64,30 @@ class AddMeme extends Component {
             this.setState({
                 homeRedirect : true
             })
-            this.context.setAlert(101)
+            this.context.setAlert(
+                "Meme added successfully! 😈",
+                "success"
+            )
 
         }catch(err){
             this.setState({buttonEnabled : true})
 
             const status = err.response.status
             if(status === 400){
-                this.context.setAlert(21)
+                this.context.setAlert(
+                    "You have to fill all gaps correctly!", 
+                    "danger"
+                )
             }else if(status === 500){
-                this.context.setAlert(0)
+                this.context.setAlert(
+                    "Oops! Something went wrong! 👿", 
+                    "danger"
+                )
             }else{
-                this.context.setAlert(0)
+                this.context.setAlert(
+                    "Oops! Something went wrong! 👿", 
+                    "danger"
+                )
             }
         }
     }
@@ -280,9 +295,15 @@ class AddMeme extends Component {
             const status = err.response.status
 
             if(status === 500){
-                this.context.setAlert(0)
+                this.context.setAlert(
+                    "Oops! Something went wrong! 👿", 
+                    "danger"
+                )
             }else{
-                this.context.setAlert(0)
+                this.context.setAlert(
+                    "Oops! Something went wrong! 👿", 
+                    "danger"
+                )
             }
         }
     }
@@ -290,13 +311,15 @@ class AddMeme extends Component {
 
     handleNotLogged(){
         if(!localStorage.getItem("token")){
-            const message = 32
 
             this.setState({
                 loginRedirect : true,
             })
 
-            this.context.setAlert(message)
+            this.context.setAlert(
+                "You are not signed in!", 
+                "danger"
+            )
         }
     }
 
@@ -340,7 +363,7 @@ class AddMeme extends Component {
 
     componentWillUnmount(){
         if(this.context.state.alert !== null){
-            this.context.setAlert(null)
+            this.context.setAlert(null, null)
         }
     }
 

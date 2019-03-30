@@ -23,7 +23,7 @@ class Logout extends Component {
             redirect : true,
         })
 
-        this.context.setAlert(message)
+        this.context.setAlert(message, "danger")
     }
 
     componentDidMount(){

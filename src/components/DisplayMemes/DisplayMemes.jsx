@@ -212,12 +212,21 @@ class DisplayMemes extends Component {
                     await this.getMemes()
                 }
                 
-                this.context.setAlert(102)
+                this.context.setAlert(
+                    "There are no more memes! 👿",
+                    "info"
+                )
             }
             else if(status === 500){
-                this.context.setAlert(0)
+                this.context.setAlert(
+                    "Oops! Something went wrong! 👿", 
+                    "danger"
+                )
             }else{
-                this.context.setAlert(0)
+                this.context.setAlert(
+                    "Oops! Something went wrong! 👿", 
+                    "danger"
+                )
             }
 
             return false
@@ -239,7 +248,7 @@ class DisplayMemes extends Component {
     
     componentWillUnmount = async() => {
         if(this.context.state.alert !== null){
-            await this.context.setAlert(null)
+            await this.context.setAlert(null, null)
         }
     }
 

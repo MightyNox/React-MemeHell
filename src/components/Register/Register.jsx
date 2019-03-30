@@ -57,7 +57,10 @@ class Register extends Component {
             !checkBox 
             ){
 
-            this.context.setAlert(21)
+            this.context.setAlert(
+                "You have to fill all gaps correctly!", 
+                "danger"
+            )
             return
         }
 
@@ -74,17 +77,29 @@ class Register extends Component {
                 redirect : true
             })
 
-            this.context.setAlert(33)
+            this.context.setAlert(
+                "User successfully created! Now you can sign in 😈", 
+                "success"
+            )
 
         }catch(err){
             
             const status = err.response.status
             if(status === 400){
-                this.context.setAlert(21)
+                this.context.setAlert(
+                    "You have to fill all gaps correctly!", 
+                    "danger"
+                )
             }else if(status === 500){
-                this.context.setAlert(0)
+                this.context.setAlert(
+                    "Oops! Something went wrong! 👿", 
+                    "danger"
+                )
             }else{
-                this.context.setAlert(0)
+                this.context.setAlert(
+                    "Oops! Something went wrong! 👿", 
+                    "danger"
+                )
             }
         }
     }
@@ -288,10 +303,6 @@ class Register extends Component {
 
     
     render() {
-        if(localStorage.getItem("token") !== null){
-            return <Redirect to="/"/>
-        }
-
         if(this.state.redirect){
             return (
                 <React.Fragment>
@@ -441,7 +452,7 @@ class Register extends Component {
 
     componentWillUnmount(){
         if(this.context.state.alert !== null){
-            this.context.setAlert(null)
+            this.context.setAlert(null, null)
         }
     }
 }

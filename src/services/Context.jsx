@@ -1,23 +1,38 @@
 import React from 'react'
 
-const Context = React.createContext()
+const ReactContext = React.createContext()
 
-export class AlertProvider extends React.Component {
+export class Context extends React.Component {
     state = {
-        alert : null
+        alert : {
+            message : null,
+            type : null
+        },
+        signedIn : null
     }
 
     render() {
         return (
-            <Context.Provider value = {{
-                state : this.state,
-                setAlert : (value) => this.setState(
-                    {alert : value}
-                )}}>
+            <ReactContext.Provider value = {{
+                    state : this.state,
+                    setAlert : (message, type) => {
+                        this.setState({
+                            alert : {
+                                message : message,
+                                type : type
+                            }
+                        })
+                    },
+                    setSignedIn : (value) => {
+                        this.setState({
+                            signedIn : value
+                        })
+                    }
+                }}>
                 {this.props.children}
-            </Context.Provider>
+            </ReactContext.Provider>
         )
     }
 }
 
-export default Context
+export default ReactContext

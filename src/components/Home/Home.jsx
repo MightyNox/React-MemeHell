@@ -71,7 +71,7 @@ class Home extends Component {
 
     componentWillUnmount(){
         if(this.context.state.alert !== null){
-            this.context.setAlert(null)
+            this.context.setAlert(null, null)
         }
     }
 }
