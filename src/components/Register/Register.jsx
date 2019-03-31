@@ -3,9 +3,11 @@ import {Redirect} from 'react-router-dom';
 import axios from 'axios'
 import qs from 'qs'
 
-import statusMessages from '../../config/Status'
 import pattern from '../../config/Pattern'
 import Context from '../Context/Context'
+import postData from '../../services/postData'
+import formMessage from '../../services/formMessage'
+import formError from '../../services/formError'
 import './Register.css'
 
 class Register extends Component {
@@ -17,25 +19,37 @@ class Register extends Component {
         nickname:{
             value : null,
             correct : false,
-            message : null
+            alert : {
+                message : null,
+                type : null
+            }
         },
 
         email:{
             value : null,
             correct : false,
-            message : null
+            alert : {
+                message : null,
+                type : null
+            }
         },
 
         password:{
             value : null,
             correct : false,
-            message : null
+            alert : {
+                message : null,
+                type : null
+            }
         },
 
         confirmPassword : {
             value : null,
             correct : false,
-            message : null
+            alert : {
+                message : null,
+                type : null
+            }
         },
 
         checkBox : false,
@@ -70,9 +84,11 @@ class Register extends Component {
             password : password.value,
         }
 
-        try{
-            await axios.post('/auth/register', qs.stringify(body))
-        
+        const response = await postData('/auth/register', qs.stringify(body))
+
+        if (response.error) {
+            this.context.setAlert(response.error.message, response.error.type)
+        }else{
             this.setState({
                 redirect : true
             })
@@ -81,26 +97,6 @@ class Register extends Component {
                 "User successfully created! Now you can sign in 😈", 
                 "success"
             )
-
-        }catch(err){
-            
-            const status = err.response.status
-            if(status === 400){
-                this.context.setAlert(
-                    "You have to fill all gaps correctly!", 
-                    "danger"
-                )
-            }else if(status === 500){
-                this.context.setAlert(
-                    "Oops! Something went wrong! 👿", 
-                    "danger"
-                )
-            }else{
-                this.context.setAlert(
-                    "Oops! Something went wrong! 👿", 
-                    "danger"
-                )
-            }
         }
     }
 
@@ -113,7 +109,10 @@ class Register extends Component {
                 nickname : {
                     value : null,
                     correct : false,
-                    message : null
+                    alert : {
+                        message : null,
+                        type : null
+                    }
             }})
             
             return
@@ -125,7 +124,10 @@ class Register extends Component {
                 nickname : {
                     value : null,
                     correct : false,
-                    message : 53
+                    alert : {
+                        message : "Incorrect nickname! Min. 3 signs",
+                        type : "danger"
+                    }
             }})
 
             return
@@ -138,7 +140,10 @@ class Register extends Component {
                 nickname : {
                     value : nickname,
                     correct : true,
-                    message : 51
+                    alert : {
+                        message : "This nickname is free!",
+                        type : "success"
+                    }
             }})
 
         }catch(err){
@@ -146,7 +151,10 @@ class Register extends Component {
                 nickname : {
                     value : null,
                     correct : false,
-                    message : 52
+                    alert : {
+                        message : "This nickname is taken!",
+                        type : "danger"
+                    }
             }})
         }
     }
@@ -160,7 +168,10 @@ class Register extends Component {
                 email : {
                     value : null,
                     correct : false,
-                    message : null
+                    alert : {
+                        message : null,
+                        type : null
+                    }
             }})
 
             return
@@ -172,7 +183,10 @@ class Register extends Component {
                 email : {
                     value : null,
                     correct : false,
-                    message : 56
+                    alert : {
+                        message : "Incorrect email!",
+                        type : "danger"
+                    }
             }})
 
             return
@@ -185,7 +199,10 @@ class Register extends Component {
                 email : {
                     value : email,
                     correct : true,
-                    message : 54
+                    alert : {
+                        message : "This email is free!",
+                        type : "success"
+                    }
             }})
 
         }catch(err){
@@ -193,7 +210,10 @@ class Register extends Component {
                 email : {
                     value : null,
                     correct : false,
-                    message : 55
+                    alert : {
+                        message : "This email is taken!",
+                        type : "danger"
+                    }
             }})
         }
     }
@@ -208,7 +228,10 @@ class Register extends Component {
                 password : {
                     value : null,
                     correct : false,
-                    message : null
+                    alert : {
+                        message : null,
+                        type : null
+                    }
             }})
 
             return
@@ -221,7 +244,10 @@ class Register extends Component {
                 this.setState({
                     confirmPassword : {
                         correct : false,
-                        message : 60
+                        alert : {
+                            message : "Passwords have to match!",
+                            type : "danger"
+                        }
                 }})
             }
 
@@ -229,7 +255,10 @@ class Register extends Component {
                 password : {
                     value : null,
                     correct : false,
-                    message : 58
+                    alert : {
+                        message : "Password is too weak! Min. 8 signs",
+                        type : "danger"
+                    }
             }})
 
             return
@@ -239,7 +268,10 @@ class Register extends Component {
             password : {
                 value : password,
                 correct : true,
-                message : 57
+                alert : {
+                    message : "Acceptable",
+                    type : "success"
+                }
         }})
     }
 
@@ -253,7 +285,10 @@ class Register extends Component {
                 confirmPassword : {
                     value : null,
                     correct : false,
-                    message : null
+                    alert : {
+                        message : null,
+                        type : null
+                    }
             }})
 
             return
@@ -264,7 +299,10 @@ class Register extends Component {
                 confirmPassword : {
                     value : null,
                     correct : false,
-                    message : 61
+                    alert : {
+                        message : "First you have to set password!",
+                        type : "danger"
+                    }
             }})
 
             return
@@ -276,7 +314,10 @@ class Register extends Component {
                 confirmPassword : {
                     value : null,
                     correct : false,
-                    message : 60
+                    alert : {
+                        message : "Passwords have to match!",
+                        type : "danger"
+                    }
             }})
 
             return
@@ -286,7 +327,10 @@ class Register extends Component {
             confirmPassword : {
                 value : confirmPassword,
                 correct : true,
-                message : 59
+                alert : {
+                    message : "Matches",
+                    type : "success"
+                }
         }})
     }
 
@@ -337,8 +381,8 @@ class Register extends Component {
                                     </label>
                                 </div>
                                 <div className="form-group col-md-3">
-                                    <input required={true} type="text" className={this.handleFormError(this.state.nickname)} onBlur={this.handleNicknameOnBlur} placeholder="Mr. Example" />
-                                    {this.handleFormMessage(this.state.nickname)}
+                                    <input required={true} type="text" className={formError(this.state.nickname.alert)} onBlur={this.handleNicknameOnBlur} placeholder="Mr. Example" />
+                                    {formMessage(this.state.nickname.alert)}
                                 </div>
                             </div>
 
@@ -351,8 +395,8 @@ class Register extends Component {
                                     </label>
                                 </div>
                                 <div className="form-group col-md-3">
-                                    <input required={true} type="text" className={this.handleFormError(this.state.email)} onBlur={this.handleEmailOnBlur} placeholder="simple@email.com" />
-                                    {this.handleFormMessage(this.state.email)}
+                                    <input required={true} type="text" className={formError(this.state.email.alert)} onBlur={this.handleEmailOnBlur} placeholder="simple@email.com" />
+                                    {formMessage(this.state.email.alert)}
                                 </div>
                             </div>
 
@@ -365,8 +409,8 @@ class Register extends Component {
                                     </label>
                                 </div>
                                 <div className="form-group col-md-3">
-                                    <input required={true} type="password" className={this.handleFormError(this.state.password)} onBlur={this.handlePasswordOnBlur} placeholder="password" />
-                                    {this.handleFormMessage(this.state.password)}
+                                    <input required={true} type="password" className={formError(this.state.password.alert)} onBlur={this.handlePasswordOnBlur} placeholder="password" />
+                                    {formMessage(this.state.password.alert)}
                                 </div>
                             </div>
 
@@ -379,8 +423,8 @@ class Register extends Component {
                                     </label>
                                 </div>
                                 <div className="form-group col-md-3">
-                                    <input required={true} type="password" className={this.handleFormError(this.state.confirmPassword)} onBlur={this.handleConfirmPasswordOnBlur} placeholder="password" />
-                                    {this.handleFormMessage(this.state.confirmPassword)}
+                                    <input required={true} type="password" className={formError(this.state.confirmPassword.alert)} onBlur={this.handleConfirmPasswordOnBlur} placeholder="password" />
+                                    {formMessage(this.state.confirmPassword.alert)}
                                 </div>
                             </div>
 
@@ -411,44 +455,6 @@ class Register extends Component {
             </React.Fragment>
         )
     }
-
-
-    handleFormError(field){
-        let message = field.message
-        let returnValue = "form-control"
-
-        if(message !== null){
-            message = statusMessages[message][1]
-            
-            if(message === "danger"){
-                returnValue += " is-invalid"
-            }
-            else if(message === "success"){
-                returnValue += " is-valid"
-            }
-        }
-
-        return returnValue
-    }
-    
-
-    handleFormMessage(field){
-        let message = field.message
-        let returnValue = null
-
-        if(message !== null){
-            const statusMessage = statusMessages[message]
-
-            returnValue = (
-                <small className={"form-text text-"+statusMessage[1]+""}>
-                    {statusMessage[0]}
-                </small>
-            )
-        }
-
-        return returnValue
-    }
-    
 
     componentWillUnmount(){
         if(this.context.state.alert !== null){
