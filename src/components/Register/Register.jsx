@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import {Redirect} from 'react-router-dom';
-import axios from 'axios'
 import qs from 'qs'
 
 import pattern from '../../config/Pattern'
@@ -133,30 +132,29 @@ class Register extends Component {
             return
         }
 
-        try{
-            await axios.post('/auth/check-nickname', qs.stringify({nickname : nickname}))
+            const response = await postData('/auth/check-nickname', qs.stringify({nickname : nickname}))
 
-            this.setState({
-                nickname : {
-                    value : nickname,
-                    correct : true,
-                    alert : {
-                        message : "This nickname is free!",
-                        type : "success"
-                    }
-            }})
-
-        }catch(err){
-            this.setState({
-                nickname : {
-                    value : null,
-                    correct : false,
-                    alert : {
-                        message : "This nickname is taken!",
-                        type : "danger"
-                    }
-            }})
-        }
+            if(response.error){
+                await this.setState({
+                    nickname : {
+                        value : null,
+                        correct : false,
+                        alert : {
+                            message : response.error.message,
+                            type : response.error.type
+                        }
+                }})
+            }else{
+                await this.setState({
+                    nickname : {
+                        value : nickname,
+                        correct : true,
+                        alert : {
+                            message : "This nickname is free!",
+                            type : "success"
+                        }
+                }})
+            }
     }
 
 
@@ -192,10 +190,20 @@ class Register extends Component {
             return
         }
 
-        try{
-            await axios.post('/auth/check-email', qs.stringify({email : email}))
+        const response = await postData('/auth/check-email', qs.stringify({email : email}))
 
-            this.setState({
+        if(response.error){
+            await this.setState({
+                nickname : {
+                    email : null,
+                    correct : false,
+                    alert : {
+                        message : response.error.message,
+                        type : response.error.type
+                    }
+            }})
+        }else{
+            await this.setState({
                 email : {
                     value : email,
                     correct : true,
@@ -204,18 +212,8 @@ class Register extends Component {
                         type : "success"
                     }
             }})
-
-        }catch(err){
-            this.setState({
-                email : {
-                    value : null,
-                    correct : false,
-                    alert : {
-                        message : "This email is taken!",
-                        type : "danger"
-                    }
-            }})
         }
+
     }
 
 
@@ -457,9 +455,7 @@ class Register extends Component {
     }
 
     componentWillUnmount(){
-        if(this.context.state.alert !== null){
-            this.context.setAlert(null, null)
-        }
+        this.context.setAlert(null, null)
     }
 
     componentDidMount(){
