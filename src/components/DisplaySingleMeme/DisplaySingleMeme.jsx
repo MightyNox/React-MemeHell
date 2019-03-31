@@ -5,14 +5,16 @@ import qs from 'qs'
 
 import pattern from '../../config/Pattern'
 import Context from '../Context/Context'
+import postData from '../../services/postData'
+import getData from '../../services/getData'
+import convertDate from '../../services/convertDate'
 import './DisplaySingleMeme.css'
 
 class DisplaySingleMeme extends Component {
 
     state = {
 
-        loginRedirect : false,
-        homeRedirect : false,
+        redirect : false,
 
         meme : null,
 
@@ -29,35 +31,14 @@ class DisplaySingleMeme extends Component {
             "id" : this.state.meme._id
         }
 
-        try{
+        const response = await postData('/meme/rate', qs.stringify(body))
 
-            const response = await axios.post('/meme/rate', qs.stringify(body))
-
-            this.setState({
+        if (response.error) {
+            this.context.setAlert(response.error.message, response.error.type)
+        }else{
+            await this.setState({
                 meme : response.data.meme
-            })   
-
-        }catch(err){
-
-            const status = err.response.status
-
-            if(status === 400){
-                this.context.setAlert(
-                    "You have rated this meme!",
-                    "danger"
-                )
-            }
-            else if(status === 500){
-                this.context.setAlert(
-                    "Oops! Something went wrong! 👿", 
-                    "danger"
-                )
-            }else{
-                this.context.setAlert(
-                    "Oops! Something went wrong! 👿", 
-                    "danger"
-                )
-            }
+            })
         }
     }
 
@@ -81,10 +62,11 @@ class DisplaySingleMeme extends Component {
             "memeId" : this.state.meme._id
         }
 
-        try{
+        const response = await postData('/comment/add', qs.stringify(body))
 
-            const response = await axios.post('/comment/add', qs.stringify(body))
-
+        if (response.error) {
+            this.context.setAlert(response.error.message, response.error.type)
+        }else{
             await this.setState({
                 content : null,
                 comments : response.data.comments
@@ -96,28 +78,6 @@ class DisplaySingleMeme extends Component {
             )
 
             this.refs.commentTextArea.value = "Hello I'm Mr. Puffin, share your opinion with me!"
-
-        }catch(err){
-
-            const status = err.response.status
-
-            if(status === 400){
-                this.context.setAlert(
-                    "This comment is incorrect!",
-                    "danger"
-                )
-            }
-            else if(status === 500){
-                this.context.setAlert(
-                    "Oops! Something went wrong! 👿", 
-                    "danger"
-                )
-            }else{
-                this.context.setAlert(
-                    "Oops! Something went wrong! 👿", 
-                    "danger"
-                )
-            }
         }
     }
 
@@ -133,17 +93,7 @@ class DisplaySingleMeme extends Component {
     
     render() {
 
-        if(this.state.loginRedirect){
-            return (
-                <React.Fragment>
-                   <Redirect to={{
-                       pathname: "/login"
-                    }}/>
-               </React.Fragment>
-            )
-        }
-
-        if(this.state.homeRedirect){
+        if(this.state.redirect){
             return (
                 <React.Fragment>
                    <Redirect to={{
@@ -154,7 +104,7 @@ class DisplaySingleMeme extends Component {
         }
 
         return (
-            <div>
+            <div className="space">
                 <div className="row container-fluid">
                     <div className="col-2"/>
                     <div className="col-8">
@@ -211,7 +161,7 @@ class DisplaySingleMeme extends Component {
                                 </div>
                                 <div className="col text-center">
                                     <small>
-                                        Date: {this.convertDate(this.state.meme.date)}
+                                        Date: {convertDate(this.state.meme.date)}
                                     </small>
                                 </div>
                                 <div className="col text-right">
@@ -275,7 +225,7 @@ class DisplaySingleMeme extends Component {
                                 </div> 
                                 <div className="col-xs-1 col-md-3 col-xl-2">
                                     <small>
-                                        {this.convertDate(comment.date)}
+                                        {convertDate(comment.date)}
                                     </small>
                                 </div> 
                             </div>      
@@ -288,55 +238,23 @@ class DisplaySingleMeme extends Component {
     }
 
 
-    convertDate = (date) => {
-        const dateToConvert = new Date(date)
-        let day = dateToConvert.getDate();
-        let month = dateToConvert.getMonth();
-        let year = dateToConvert.getFullYear();
-
-        if(day.toString().length === 1){
-            day = "0"+day
-        }
-
-        if(month.toString().length === 1){
-            month = "0"+month
-        }
-
-        return (day+'-'+month+'-'+year)
-    }
-
-
     getComments = async() => {
-        try{
-            const params={
-                params : {
-                    memeId: this.props.match.params.id
-                }
+
+        const params={
+            params : {
+                memeId: this.props.match.params.id
             }
+        }
 
-            const response = await axios.get('/comment/', params)
+        const response = await getData('/comment/', params)
 
-            this.setState({
+        if (response.error) {
+            await this.setState({redirect : true})
+            this.context.setAlert(response.error.message, response.error.type)
+        }else{
+            await this.setState({
                 comments : response.data.comments
-            })   
-
-        }catch(err){
-
-            const status = err.response.status
-
-            if(status === 500){
-                this.context.setAlert(
-                    "Oops! Something went wrong! 👿", 
-                    "danger"
-                )
-            }else{
-                this.context.setAlert(
-                    "Oops! Something went wrong! 👿", 
-                    "danger"
-                )
-            }
-
-            await this.setState({homeRedirect : true})
+            }) 
         }
     }
 
@@ -349,53 +267,15 @@ class DisplaySingleMeme extends Component {
             }
         }
 
-        try{
+        const response = await getData('/meme/single', params)
 
-            const response = await axios.get('/meme/single', params)
-
-            this.setState({
-                meme : response.data.meme
-            })   
-
-        }catch(err){
-
-            const status = err.response.status
-
-            if(status === 400){
-                await this.setState({page : this.state.page - 1})
-                this.context.setAlert(
-                    "Meme not found! 👿",
-                    "danger"
-                )
-            }
-            else if(status === 500){
-                this.context.setAlert(
-                    "Oops! Something went wrong! 👿", 
-                    "danger"
-                )
-            }else{
-                this.context.setAlert(
-                    "Oops! Something went wrong! 👿", 
-                    "danger"
-                )
-            }
-
-            await this.setState({homeRedirect : true})
-        }
-    }
-
-
-    async handleNotLogged(){
-        if(!localStorage.getItem("token")){
-
+        if (response.error) {
+            await this.setState({redirect : true})
+            this.context.setAlert(response.error.message, response.error.type)
+        }else{
             await this.setState({
-                loginRedirect : true,
-            })
-
-            this.context.setAlert(
-                "You are not signed in!", 
-                "danger"
-            )
+                meme : response.data.meme
+            })  
         }
     }
 
@@ -407,10 +287,17 @@ class DisplaySingleMeme extends Component {
     }
 
 
-    async componentDidMount(){
-        await this.handleNotLogged()
+    componentDidMount = async() =>{
+        if(!this.context.state.signedIn){
+            await this.setState({
+                redirect : true,
+            })
 
-        if(!this.state.loginRedirect){
+            this.context.setAlert(
+                "You are not signed in!", 
+                "danger"
+            )
+        }else{
             await this.getMeme()
             await this.getComments()
         }
