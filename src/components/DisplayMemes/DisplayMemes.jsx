@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 
 import Context from '../Context/Context'
+import getData from '../../services/getData'
+import convertDate from '../../services/convertDate'
 import "./DisplayMemes.css"
 
 class DisplayMemes extends Component {
@@ -143,7 +144,7 @@ class DisplayMemes extends Component {
                                         </div>
                                         <div className="col text-center">
                                             <small>
-                                                Date: {this.convertDate(meme.date)}
+                                                Date: {convertDate(meme.date)}
                                             </small>
                                         </div>
                                         <div className="col text-right">
@@ -163,24 +164,6 @@ class DisplayMemes extends Component {
     }
 
 
-    convertDate = (date) => {
-        const dateToConvert = new Date(date)
-        let day = dateToConvert.getDate();
-        let month = dateToConvert.getMonth();
-        let year = dateToConvert.getFullYear();
-
-        if(day.toString().length === 1){
-            day = "0"+day
-        }
-
-        if(month.toString().length === 1){
-            month = "0"+month
-        }
-
-        return (day+'-'+month+'-'+year)
-    }
-
-
     getMemes = async() => {
         const params={
             params : {
@@ -189,47 +172,18 @@ class DisplayMemes extends Component {
             }
         }
 
-        try{
+        const response = await getData('/meme/', params)
 
-            const response = await axios.get('/meme/', params)
+        if (response.error) {
+            this.context.setAlert(response.error.message, response.error.type)
 
+            return false
+        }else{
             await this.setState({
                 memes : response.data.memes
             })   
             
             return true
-
-        }catch(err){
-
-            const status = err.response.status
-            if(status === 400){
-                const response = await axios.get('/meme/count')
-                const lastPage = Math.ceil(response.data.count/10)-1
-
-                if(lastPage !== -1){
-                    await this.setState({page : lastPage})
-                    this.props.history.push("/memes/" + (lastPage))
-                    await this.getMemes()
-                }
-                
-                this.context.setAlert(
-                    "There are no more memes! 👿",
-                    "info"
-                )
-            }
-            else if(status === 500){
-                this.context.setAlert(
-                    "Oops! Something went wrong! 👿", 
-                    "danger"
-                )
-            }else{
-                this.context.setAlert(
-                    "Oops! Something went wrong! 👿", 
-                    "danger"
-                )
-            }
-
-            return false
         }
     }
 
@@ -240,16 +194,32 @@ class DisplayMemes extends Component {
 
         if(isNaN(page)){
             await this.setState({page : 0})
-        }else{
-            await this.setState({page : this.props.match.params.page})
         }
+        else if(page < 0) {
+            await this.setState({page : 0})
+        } else{         
+            const response = await getData('/meme/count')
+
+            if (response.error) {
+                this.context.setAlert(response.error.message, response.error.type)
+            }else{
+                const lastPage = Math.ceil(response.data.count/10)-1
+
+                if(lastPage <= page){
+                    await this.setState({page : lastPage})
+                }else{
+                    await this.setState({page : page})
+                }
+                await this.getMemes()
+            }
+        }
+
+        await this.props.history.push("/memes/" + (this.state.page))
     }
 
     
     componentWillUnmount = async() => {
-        if(this.context.state.alert !== null){
-            await this.context.setAlert(null, null)
-        }
+        await this.context.setAlert(null, null)
     }
 
 

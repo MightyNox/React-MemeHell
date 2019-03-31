@@ -280,9 +280,7 @@ class DisplaySingleMeme extends Component {
 
 
     componentWillUnmount(){
-        if(this.context.state.alert !== null){
-            this.context.setAlert(null, null)
-        }
+        this.context.setAlert(null, null)
     }
 
 
