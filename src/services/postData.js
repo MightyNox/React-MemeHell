@@ -1,18 +1,31 @@
 
 import axios from 'axios'
 
+const instance = axios.create()
+instance.defaults.timeout = 3000
+
 export default async function postData(route, request) {
 
     try{
         
-        return await axios.post(route, request)
+        return await instance.post(route, request)
 
     }catch(error){
-        const status = error.response.status
-        if(status === 400){
+        if(error.response === undefined) {
             return ({
                 error : {
-                    message : error.response.data.message, 
+                    message : "Connection error!", 
+                    type : "danger"
+                }
+            })
+        }
+
+        const status = error.response.status
+        const message =error.response.data.message
+        if(status === 400 && message !== "Topology was destroyed"){
+            return ({
+                error : {
+                    message : message, 
                     type : "danger"
                 }
             })

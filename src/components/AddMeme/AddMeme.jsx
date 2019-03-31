@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import {Redirect} from 'react-router-dom';
-import axios from 'axios'
 
 import pattern from '../../config/Pattern'
-import statusMessages from '../../config/Status'
 import Context from '../Context/Context'
+import postData from '../../services/postData'
+import getData from '../../services/getData'
+import formMessage from '../../services/formMessage'
+import formError from '../../services/formError'
 import './AddMeme.css'
 
 class AddMeme extends Component {
@@ -19,7 +21,10 @@ class AddMeme extends Component {
         title:{
             value : null,
             correct : false,
-            message : null
+            alert : {
+                message : null,
+                type : null
+            }
         },
 
         tags : null
@@ -28,13 +33,7 @@ class AddMeme extends Component {
     fileUpload = async() => {
         const title = this.state.title
         const file = this.state.file
-        const elements = document.getElementById("tagSelect")
-        let tags = []
-        Array.from(elements).forEach(function (element) {
-            if(element.selected){
-                tags.push(element.value)
-            }
-        })
+        const tags = this.listTags()
 
         if(
             tags.length === 0 || 
@@ -54,40 +53,21 @@ class AddMeme extends Component {
         data.append("tags", tags)
         data.append("file", file)
 
-        this.setState({buttonEnabled : false})
+        await this.setState({buttonEnabled : false})
         
-        try{
+        const response = await postData('/meme/add', data)
 
-            await axios.post('/meme/add', data)
-
-            this.setState({
+        if (response.error) {
+            await this.setState({buttonEnabled : true})
+            this.context.setAlert(response.error.message, response.error.type)
+        }else{
+            await this.setState({
                 homeRedirect : true
             })
             this.context.setAlert(
                 "Meme added successfully! 😈",
                 "success"
             )
-
-        }catch(err){
-            this.setState({buttonEnabled : true})
-
-            const status = err.response.status
-            if(status === 400){
-                this.context.setAlert(
-                    "You have to fill all gaps correctly!", 
-                    "danger"
-                )
-            }else if(status === 500){
-                this.context.setAlert(
-                    "Oops! Something went wrong! 👿", 
-                    "danger"
-                )
-            }else{
-                this.context.setAlert(
-                    "Oops! Something went wrong! 👿", 
-                    "danger"
-                )
-            }
         }
     }
 
@@ -107,7 +87,10 @@ class AddMeme extends Component {
                 title : {
                     value : null,
                     correct : false,
-                    message : null
+                    alert : {
+                        message : null,
+                        type : null
+                    }
             }})
 
             return
@@ -119,7 +102,10 @@ class AddMeme extends Component {
                 title : {
                     value : null,
                     correct : false,
-                    message : 64,
+                    alert : {
+                        message : "Incorrect title! Min. 6 signs",
+                        type : "danger"
+                    }
             }})
 
             return
@@ -130,7 +116,10 @@ class AddMeme extends Component {
             title : {
                 value : title,
                 correct : true,
-                message : 49
+                alert : {
+                    message : "Acceptable", 
+                    type : "success"
+                }
         }})
     }
 
@@ -170,8 +159,8 @@ class AddMeme extends Component {
                                     </label>
                                 </div>
                                 <div className="form-group col-md-3">
-                                    <input required={true} type="text" className={this.handleFormError(this.state.title)} onBlur={this.handleTitleOnBlur} placeholder="Lana drahrepus" />
-                                    {this.handleFormMessage(this.state.title)}
+                                    <input required={true} type="text" className={formError(this.state.title.alert)} onBlur={this.handleTitleOnBlur} placeholder="Lana drahrepus" />
+                                    {formMessage(this.state.title.alert)}
                                 </div>
                             </div>
 
@@ -223,6 +212,19 @@ class AddMeme extends Component {
     }
 
 
+    listTags = () => {
+        const elements = document.getElementById("tagSelect")
+        let tags = []
+        Array.from(elements).forEach(function (element) {
+            if(element.selected){
+                tags.push(element.value)
+            }
+        })
+
+        return tags
+    }
+
+
     displayUploadButton(){
         if(this.state.buttonEnabled)
         {
@@ -248,10 +250,7 @@ class AddMeme extends Component {
                 </div>
             )
 
-        }else{
-
         }
-        
     }
 
     
@@ -274,63 +273,13 @@ class AddMeme extends Component {
 
     getTags = async() => {
 
-        try{
-            const response = await axios.get('/tag/')
-            this.setState({tags : response.data.tags})
+        const response = await getData('/tag/')
 
-        }catch(err){
-
-            const status = err.response.status
-
-            if(status === 500){
-                this.context.setAlert(
-                    "Oops! Something went wrong! 👿", 
-                    "danger"
-                )
-            }else{
-                this.context.setAlert(
-                    "Oops! Something went wrong! 👿", 
-                    "danger"
-                )
-            }
+        if (response.error) {
+            await this.context.setAlert(response.error.message, response.error.type)
+        }else{
+            await this.setState({tags : response.data.tags})
         }
-    }
-
-
-    handleFormError(field){
-        let message = field.message
-        let returnValue = "form-control"
-
-        if(message !== null){
-            message = statusMessages[message][1]
-            
-            if(message === "danger"){
-                returnValue += " is-invalid"
-            }
-            else if(message === "success"){
-                returnValue += " is-valid"
-            }
-        }
-
-        return returnValue
-    }
-    
-
-    handleFormMessage(field){
-        let message = field.message
-        let returnValue = null
-
-        if(message !== null){
-            const statusMessage = statusMessages[message]
-
-            returnValue = (
-                <small className={"form-text text-"+statusMessage[1]+""}>
-                    {statusMessage[0]}
-                </small>
-            )
-        }
-
-        return returnValue
     }
 
 
@@ -339,8 +288,8 @@ class AddMeme extends Component {
     }
 
 
-    componentDidMount(){
-        this.getTags()
+    componentDidMount = async() => {
+        await this.getTags()
     }
 }
 
