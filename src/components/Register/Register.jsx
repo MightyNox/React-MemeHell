@@ -461,6 +461,12 @@ class Register extends Component {
             this.context.setAlert(null, null)
         }
     }
+
+    componentDidMount(){
+        if(this.context.state.signedIn){
+            this.setState({redirect : true})
+        }
+    }
 }
 
 Register.contextType = Context
