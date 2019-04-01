@@ -16,7 +16,7 @@ class AddMeme extends Component {
 
         file : null,
 
-        homeRedirect : false,
+        redirect : false,
 
         title:{
             value : null,
@@ -62,7 +62,7 @@ class AddMeme extends Component {
             this.context.setAlert(response.error.message, response.error.type)
         }else{
             await this.setState({
-                homeRedirect : true
+                redirect : true
             })
             this.context.setAlert(
                 "Meme added successfully! 😈",
@@ -125,7 +125,7 @@ class AddMeme extends Component {
 
     
     render() {
-        if(this.state.homeRedirect){
+        if(this.state.redirect){
             return (
                 <React.Fragment>
                    <Redirect to={{
@@ -289,7 +289,11 @@ class AddMeme extends Component {
 
 
     componentDidMount = async() => {
-        await this.getTags()
+        if(!this.context.state.signedIn){
+            await this.setState({redirect : true})
+        }else{
+            await this.getTags()
+        }
     }
 }
 

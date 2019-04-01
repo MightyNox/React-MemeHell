@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 
 import Alert from "../Alert/Alert"
 import Context from '../Context/Context'
-import './Menu.css'
+import './menu.css'
 
 class Menu extends Component {
     render() {
@@ -70,7 +70,7 @@ class Menu extends Component {
                 <React.Fragment>
                     <div className="navbar-nav">
                         {/* Memes Tag */}
-                        <Link to="/memes/category">
+                        <Link to="/select-category">
                             <button className="btn-menu" type="button">
                                 <i className="fas fa-hashtag"/>
                             </button>
@@ -123,7 +123,7 @@ class Menu extends Component {
             return(
                 <div>
                     {/* Memes Tag */}
-                    <Link to="/memes/category">
+                    <Link to="/select-category">
                         <i className="fas fa-hashtag"/>
                     </Link>
                     

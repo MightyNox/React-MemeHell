@@ -7,7 +7,7 @@ import Login from '../Login/Login'
 import Logout from '../Logout/Logout'
 import AddMeme from '../AddMeme/AddMeme'
 import DisplayMemes from '../DisplayMemes/DisplayMemes'
-import DisplayMemesByTags from '../DisplayMemesByTags/DisplayMemesByTags'
+import SelectCategory from '../SelectCategory/SelectCategory'
 import DisplaySingleMeme from '../DisplaySingleMeme/DisplaySingleMeme'
 import NotFound from '../NotFound/NotFound'
 import Context from '../Context/Context'
@@ -36,8 +36,8 @@ class Routes extends Component {
                 <Route exact path='/logout' component={Logout} />
                 <Route exact path='/add-meme' component={AddMeme} />
                 <Route exact path='/meme/:id' component={DisplaySingleMeme} />
-                <Route exact path='/memes/category' component={DisplayMemesByTags} />
-                <Route exact path='/memes/category/:tags/:page' component={DisplayMemesByTags} />
+                <Route exact path='/select-category' component={SelectCategory} />
+                <Route exact path='/category/:tags/:page' component={SelectCategory} />
 
                 {/* 404 Not Found */}
                 <Route component={NotFound} />
