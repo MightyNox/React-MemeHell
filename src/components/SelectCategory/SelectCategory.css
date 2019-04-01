@@ -6,3 +6,10 @@
 .space {
     padding-top: 140px;
 }
+
+.checkbox-danger input[type="checkbox"]:checked + label::before {
+    background-color: #d9534f;
+    border-color: #d9534f; 
+    outline: none !important;
+    box-shadow: none;
+}

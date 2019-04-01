@@ -165,14 +165,21 @@ class DisplayMemes extends Component {
 
 
     getMemes = async() => {
+        
         const params={
             params : {
+                tags : this.context.state.selectedTags,
                 page : this.state.page,
                 limit : 10
             }
         }
 
-        const response = await getData('/meme/', params)
+        let response
+        if(this.context.state.selectedTags) {
+            response = await getData('/meme/tag', params)
+        }else{
+            response = await getData('/meme/', params)
+        }
 
         if (response.error) {
             this.context.setAlert(response.error.message, response.error.type)
@@ -219,6 +226,7 @@ class DisplayMemes extends Component {
 
     
     componentWillUnmount = async() => {
+        await this.context.setSelectedTags(null)
         await this.context.setAlert(null, null)
     }
 

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {Redirect} from 'react-router-dom';
 
 import Context from '../Context/Context'
 import getData from '../../services/getData'
@@ -9,12 +10,53 @@ class SelectCategory extends Component {
     state = {
 
         tags : null,
+        homeRedirect : null,
+        memesRedirect : null
 
     }
     
 
+    handleSearchOnClick = async() => {
+        const tags = this.state.tags
+
+        let selectedTags = []
+        Array.from(tags).forEach(function (element) {
+            if(document.getElementById(element._id).checked){
+                selectedTags.push(element.name)
+            }
+        })
+
+        if(selectedTags.length === 0) {
+            await this.context.setAlert("You have to select category!", "danger")
+            return
+        }else{
+            await this.context.setSelectedTags(selectedTags)
+            this.setState({memesRedirect : true})
+        }
+    }
+
     
     render() {
+        if(this.state.homeRedirect){
+            return (
+                <React.Fragment>
+                   <Redirect to={{
+                       pathname: "/"
+                    }}/>
+               </React.Fragment>
+            )
+        }
+
+        if(this.state.memesRedirect){
+            return (
+                <React.Fragment>
+                   <Redirect to={{
+                       pathname: "/memes"
+                    }}/>
+               </React.Fragment>
+            )
+        }
+
         return (
             <React.Fragment>
                 <div className="space row container-fluid">
@@ -22,7 +64,12 @@ class SelectCategory extends Component {
 
                     <div className="col-8">
                         <div className="row justify-content-center">
-                            {this.displaySelect()}
+                            {this.displayCategories()}
+                        </div>
+                        <div className="row justify-content-center pt-4">
+                            <button className="btn btn-danger" type="button" onClick={this.handleSearchOnClick}>
+                                    Search
+                            </button>
                         </div>
                     </div>
 
@@ -33,17 +80,17 @@ class SelectCategory extends Component {
     }
 
 
-    displaySelect = () => {
+    displayCategories = () => {
         if(!this.state.tags){
-            return <p>There are no tags!</p>
+            return 
         }else{
             return(
                 <div className="card border-secondary text-white bg-dark mt-2">
                     <div className="form-inline card-body">
                         {this.state.tags.map((tag) => 
-                            <div class="custom-control custom-checkbox pr-4">
-                                <input type="checkbox" class="custom-control-input" id={tag._id}/>
-                                <label class="custom-control-label" for={tag._id}>
+                            <div key={tag.name} className="checkbox-danger custom-control custom-checkbox pr-4">
+                                <input type="checkbox" className="custom-control-input" id={tag._id}/>
+                                <label className="custom-control-label" htmlFor={tag._id}>
                                     {tag.name}
                                 </label>
                             </div>
@@ -60,7 +107,8 @@ class SelectCategory extends Component {
         const response = await getData('/tag/')
 
         if (response.error) {
-            await this.context.setAlert(response.error.message, response.error.type)
+            await this.setState({homeRedirect : true})
+            this.context.setAlert(response.error.message, response.error.type)
         }else{
             await this.setState({tags : response.data.tags})
         }

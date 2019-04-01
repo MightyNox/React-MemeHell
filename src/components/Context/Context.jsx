@@ -8,7 +8,8 @@ export class Context extends React.Component {
             message : null,
             type : null
         },
-        signedIn : null
+        signedIn : null,
+        selectedTags : null
     }
 
     render() {
@@ -26,6 +27,11 @@ export class Context extends React.Component {
                     setSignedIn : (value) => {
                         this.setState({
                             signedIn : value
+                        })
+                    },
+                    setSelectedTags : (value) => {
+                        this.setState({
+                            selectedTags : value
                         })
                     }
                 }}>
