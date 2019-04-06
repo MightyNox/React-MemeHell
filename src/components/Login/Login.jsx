@@ -29,7 +29,9 @@ class Login extends Component {
                 message : null,
                 type : null
             }
-        }
+        },
+
+        activationButton : null
     }
 
 
@@ -54,6 +56,10 @@ class Login extends Component {
         const response = await postData('/auth/login', qs.stringify(body))
 
         if (response.error) {
+            if(response.error.message === 'This user\'s email isn\'t confirmed!'){
+                await this.setState({activationButton : true})
+            }
+
             this.context.setAlert(response.error.message, response.error.type)
         }else{
             await localStorage.setItem("token", response.data.token)
@@ -62,6 +68,36 @@ class Login extends Component {
     
             this.context.setAlert(
                 "You are signed in! Have fun 👻",
+                "success"
+            )
+        }
+    }
+
+
+    sendEmail = async() => {
+        const login = this.state.login
+
+        if(!login.correct){
+            
+            this.context.setAlert(
+                "You have to fill login!", 
+                "danger"
+            )
+            return
+        }
+
+        const body = {
+            login : login.value
+        }
+
+        const response = await postData('/auth/confirm-email', qs.stringify(body))
+
+        if (response.error) {
+            this.context.setAlert(response.error.message, response.error.type)
+        }else{
+    
+            this.context.setAlert(
+                "Email sent!",
                 "success"
             )
         }
@@ -216,6 +252,10 @@ class Login extends Component {
                                 <button onClick={this.handleSubmitOnClick} type="button" className="btn btn-dark">Sign In</button>
                             </div>
                         </form>
+
+                        <br/>
+
+                        {this.displayActivationButton()}
                     </div>
 
                     <div className="col-2"/>
@@ -224,6 +264,21 @@ class Login extends Component {
             </React.Fragment>
         )
     }
+
+
+    displayActivationButton() {
+        if(this.state.activationButton){
+            return(
+                <div className="row justify-content-center">
+                    <button onClick={this.sendEmail} type="button" className="btn btn-dark">
+                        Confirm email &nbsp;
+                        <i class="fas fa-envelope" />
+                    </button>
+                </div>
+            )
+        }
+    }
+
     
     componentWillUnmount(){
         this.context.setAlert(null, null)

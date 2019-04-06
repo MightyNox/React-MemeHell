@@ -9,6 +9,7 @@ import AddMeme from '../AddMeme/AddMeme'
 import DisplayMemes from '../DisplayMemes/DisplayMemes'
 import SelectCategory from '../SelectCategory/SelectCategory'
 import DisplaySingleMeme from '../DisplaySingleMeme/DisplaySingleMeme'
+import EmailConfirmation from '../EmailConfirmation/EmailConfirmation'
 import NotFound from '../NotFound/NotFound'
 import Context from '../Context/Context'
 
@@ -38,6 +39,7 @@ class Routes extends Component {
                 <Route exact path='/meme/:id' component={DisplaySingleMeme} />
                 <Route exact path='/select-category' component={SelectCategory} />
                 <Route exact path='/category/:tags/:page' component={SelectCategory} />
+                <Route exact path='/email-confirmed/:key' component={EmailConfirmation} />
 
                 {/* 404 Not Found */}
                 <Route component={NotFound} />
