@@ -56,7 +56,7 @@ class Login extends Component {
         const response = await postData('/auth/login', qs.stringify(body))
 
         if (response.error) {
-            if(response.error.message === 'This user\'s email isn\'t confirmed!'){
+            if(response.error.data && response.error.data.emailConfirmed === false){
                 await this.setState({activationButton : true})
             }
 
@@ -272,7 +272,7 @@ class Login extends Component {
                 <div className="row justify-content-center">
                     <button onClick={this.sendEmail} type="button" className="btn btn-dark">
                         Confirm email &nbsp;
-                        <i class="fas fa-envelope" />
+                        <i className="fas fa-envelope" />
                     </button>
                 </div>
             )

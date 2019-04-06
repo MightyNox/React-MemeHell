@@ -21,10 +21,12 @@ export default async function postData(route, request) {
         }
 
         const status = error.response.status
-        const message =error.response.data.message
+        const message = error.response.data.message
+        const data = error.response.data.data
         if(status === 400 && message !== "Topology was destroyed"){
             return ({
                 error : {
+                    data : data,
                     message : message, 
                     type : "danger"
                 }
